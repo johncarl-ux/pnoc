@@ -1,2 +1,0 @@
-[console_scripts]
-pnoc = pnoc.cli:main
