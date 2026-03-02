@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>PNOC | Philippine National Oil Company</title>
+	<meta
+		name="description"
+		content="Official landing page concept for the Philippine National Oil Company (PNOC)."
+	/>
+	<link rel="icon" type="image/png" href="qw.png" />
+	<style>
+		:root {
+			--pnoc-orange: #2f5d8a;
+			--pnoc-black: #1b2430;
+			--pnoc-white: #ffffff;
+			--pnoc-soft: #f4f6f8;
+			--pnoc-muted: #5f6b76;
+		}
+
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		html {
+			scroll-behavior: smooth;
+		}
+
+		body {
+			font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+			background: var(--pnoc-white);
+			color: var(--pnoc-black);
+			line-height: 1.6;
+		}
+
+		.container {
+			width: min(1120px, 92vw);
+			margin: 0 auto;
+		}
+
+		header {
+			position: sticky;
+			top: 0;
+			z-index: 50;
+			background: rgba(255, 255, 255, 0.96);
+			border-bottom: 1px solid #e3e8ee;
+			backdrop-filter: blur(8px);
+		}
+
+		.nav-wrap {
+			min-height: 74px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 1rem;
+		}
+
+		.brand {
+			display: flex;
+			align-items: center;
+			gap: 0.75rem;
+			text-decoration: none;
+			color: var(--pnoc-black);
+			font-weight: 700;
+			letter-spacing: 0.3px;
+		}
+
+		.brand img {
+			width: 62px;
+			height: 62px;
+			object-fit: contain;
+		}
+
+		nav ul {
+			list-style: none;
+			display: flex;
+			align-items: center;
+			gap: 1.25rem;
+		}
+
+		nav a {
+			text-decoration: none;
+			color: var(--pnoc-black);
+			font-size: 0.95rem;
+			transition: color 0.25s ease;
+		}
+
+		nav a:hover {
+			color: var(--pnoc-orange);
+		}
+
+		.hero {
+			min-height: 72vh;
+			display: grid;
+			place-items: center;
+			text-align: center;
+			color: var(--pnoc-white);
+			position: relative;
+			isolation: isolate;
+			background:
+				linear-gradient(120deg, rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.2)),
+				url("as.jpg") center/cover no-repeat,
+				url("bg.webp") center/cover no-repeat;
+		}
+
+		.hero::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.25) 100%);
+			z-index: -1;
+		}
+
+		.hero-content {
+			width: min(800px, 92vw);
+			padding: 2rem 0;
+			animation: fadeUp 0.9s ease-out;
+		}
+
+		.hero-logo {
+			width: 118px;
+			height: 118px;
+			object-fit: contain;
+			background: var(--pnoc-white);
+			border-radius: 50%;
+			padding: 0.35rem;
+			box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+			margin-bottom: 1rem;
+		}
+
+		.tag {
+			color: #dce6f1;
+			font-weight: 600;
+			letter-spacing: 0.1em;
+			text-transform: uppercase;
+			font-size: 0.75rem;
+			margin-bottom: 0.75rem;
+		}
+
+		h1 {
+			font-size: clamp(1.9rem, 3.8vw, 3.2rem);
+			line-height: 1.15;
+			margin-bottom: 0.75rem;
+			font-weight: 700;
+		}
+
+		.hero p {
+			color: #fafafa;
+			font-size: clamp(1rem, 1.8vw, 1.15rem);
+			max-width: 62ch;
+			margin: 0 auto 1.5rem;
+		}
+
+		.hero-actions {
+			display: flex;
+			justify-content: center;
+			gap: 0.9rem;
+			flex-wrap: wrap;
+		}
+
+		.btn {
+			text-decoration: none;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			min-width: 170px;
+			padding: 0.8rem 1.1rem;
+			border-radius: 999px;
+			font-weight: 600;
+			transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+		}
+
+		.btn-primary {
+			background: var(--pnoc-orange);
+			color: var(--pnoc-white);
+			box-shadow: 0 8px 20px rgba(47, 93, 138, 0.35);
+		}
+
+		.btn-secondary {
+			border: 1px solid rgba(255, 255, 255, 0.68);
+			color: var(--pnoc-white);
+			background: rgba(255, 255, 255, 0.1);
+		}
+
+		.btn:hover {
+			transform: translateY(-2px);
+		}
+
+		.stats {
+			background: #1f2a36;
+			color: var(--pnoc-white);
+			padding: 2.4rem 0;
+		}
+
+		.stats-grid {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 1rem;
+		}
+
+		.stat {
+			border: 1px solid rgba(255, 255, 255, 0.15);
+			border-radius: 12px;
+			padding: 1rem 1.1rem;
+			background: rgba(255, 255, 255, 0.03);
+			transition: border-color 0.25s ease, transform 0.25s ease;
+		}
+
+		.stat:hover {
+			border-color: rgba(47, 93, 138, 0.8);
+			transform: translateY(-2px);
+		}
+
+		.stat strong {
+			display: block;
+			font-size: 1.6rem;
+			color: var(--pnoc-orange);
+			line-height: 1.2;
+			margin-bottom: 0.2rem;
+		}
+
+		section {
+			padding: 4rem 0;
+		}
+
+		.section-title {
+			font-size: clamp(1.45rem, 2.6vw, 2.1rem);
+			margin-bottom: 0.9rem;
+			letter-spacing: 0.2px;
+		}
+
+		.section-intro {
+			color: var(--pnoc-muted);
+			max-width: 65ch;
+			margin-bottom: 2rem;
+		}
+
+		.cards {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 1rem;
+		}
+
+		.card {
+			background: var(--pnoc-white);
+			border: 1px solid #e3e8ee;
+			border-radius: 12px;
+			padding: 1.25rem;
+			transition: box-shadow 0.25s ease, transform 0.25s ease;
+		}
+
+		.card:hover {
+			box-shadow: 0 10px 25px rgba(17, 17, 17, 0.08);
+			transform: translateY(-2px);
+		}
+
+		.card h3 {
+			margin-bottom: 0.5rem;
+			font-size: 1.1rem;
+		}
+
+		.card p {
+			color: var(--pnoc-muted);
+			font-size: 0.96rem;
+		}
+
+		.about {
+			background: var(--pnoc-soft);
+		}
+
+		.about-content {
+			display: grid;
+			grid-template-columns: 1.1fr 1fr;
+			gap: 1.5rem;
+			align-items: center;
+		}
+
+		.about-content img {
+			width: 100%;
+			border-radius: 14px;
+			border: 1px solid #e9e9e9;
+			box-shadow: 0 14px 26px rgba(17, 17, 17, 0.08);
+		}
+
+		.about-list {
+			list-style: none;
+			margin-top: 1rem;
+			display: grid;
+			gap: 0.55rem;
+		}
+
+		.about-list li {
+			padding-left: 1.25rem;
+			position: relative;
+			color: #333333;
+		}
+
+		.about-list li::before {
+			content: "";
+			width: 8px;
+			height: 8px;
+			border-radius: 999px;
+			background: var(--pnoc-orange);
+			position: absolute;
+			left: 0;
+			top: 0.6rem;
+		}
+
+		footer {
+			background: #16202a;
+			color: #e8edf3;
+			padding: 1.4rem 0;
+			text-align: center;
+			font-size: 0.92rem;
+		}
+
+		@keyframes fadeUp {
+			from {
+				opacity: 0;
+				transform: translateY(14px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@media (max-width: 900px) {
+			.stats-grid,
+			.cards,
+			.about-content {
+				grid-template-columns: 1fr;
+			}
+
+			nav ul {
+				gap: 0.85rem;
+			}
+
+			nav a {
+				font-size: 0.9rem;
+			}
+		}
+
+		@media (max-width: 560px) {
+			.nav-wrap {
+				flex-direction: column;
+				padding: 0.7rem 0;
+			}
+
+			.hero {
+				min-height: 78vh;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="container nav-wrap">
+			<a class="brand" href="#home" aria-label="PNOC Home">
+				<img src="header.png" alt="PNOC Logo" />
+				<span>PNOC</span>
+			</a>
+			<nav>
+				<ul>
+					<li><a href="#home">Home</a></li>
+					<li><a href="#services">Services</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero" id="home">
+			<div class="hero-content">
+				<img class="hero-logo" src="qw.png" alt="PNOC Symbol" />
+				<div class="tag">Philippine National Oil Company</div>
+				<h1>Secure Energy for National Progress</h1>
+				<p>
+					A modern and dependable state energy institution supporting sustainable energy
+					development, strategic resource management, and long-term national growth.
+				</p>
+				<div class="hero-actions">
+					<a class="btn btn-primary" href="#about">Learn More</a>
+					<a class="btn btn-secondary" href="#contact">Get in Touch</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="stats" aria-label="PNOC Key Metrics">
+			<div class="container stats-grid">
+				<article class="stat">
+					<strong>50+</strong>
+					<p>Years of energy leadership and public service in the Philippines.</p>
+				</article>
+				<article class="stat">
+					<strong>Nationwide</strong>
+					<p>Strategic participation in key upstream and downstream initiatives.</p>
+				</article>
+				<article class="stat">
+					<strong>Sustainable</strong>
+					<p>Long-term focus on responsible, secure, and future-ready energy programs.</p>
+				</article>
+			</div>
+		</section>
+
+		<section id="services">
+			<div class="container">
+				<h2 class="section-title">Core Areas</h2>
+				<p class="section-intro">
+					PNOC advances the country’s energy agenda through integrated programs that
+					support supply security, infrastructure growth, and policy-driven innovation.
+				</p>
+				<div class="cards">
+					<article class="card">
+						<h3>Energy Exploration</h3>
+						<p>Supporting responsible exploration and development of indigenous resources.</p>
+					</article>
+					<article class="card">
+						<h3>Infrastructure Development</h3>
+						<p>Strengthening strategic facilities to ensure reliable national energy systems.</p>
+					</article>
+					<article class="card">
+						<h3>Strategic Partnerships</h3>
+						<p>Collaborating with public and private sectors for high-impact initiatives.</p>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section class="about" id="about">
+			<div class="container about-content">
+				<div>
+					<h2 class="section-title">Formal, Focused, Future-Ready</h2>
+					<p class="section-intro">
+						PNOC continues to align with national priorities by maintaining sound governance,
+						technical excellence, and strategic direction across its programs.
+					</p>
+					<ul class="about-list">
+						<li>Public-interest driven energy initiatives</li>
+						<li>Transparent and accountable operations</li>
+						<li>Balanced approach to growth and sustainability</li>
+					</ul>
+				</div>
+				<img src="123.jpg" onerror="this.onerror=null;this.src='bg.webp';" alt="Energy and infrastructure visual" />
+			</div>
+		</section>
+	</main>
+
+	<footer id="contact">
+		<div class="container">
+			Philippine National Oil Company (PNOC) · Serving the nation through secure and
+			sustainable energy development.
+		</div>
+	</footer>
+</body>
+</html>
