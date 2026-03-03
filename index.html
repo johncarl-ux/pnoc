@@ -80,6 +80,185 @@
 			gap: 1.25rem;
 		}
 
+		/* ── Excel Upload Section ── */
+		.upload-section {
+			background: var(--pnoc-soft);
+		}
+
+		.upload-card {
+			background: var(--pnoc-white);
+			border: 2px dashed #c5d3de;
+			border-radius: 14px;
+			padding: 2rem;
+			text-align: center;
+			cursor: pointer;
+			transition: border-color 0.25s ease, background 0.25s ease;
+			margin-bottom: 2rem;
+			position: relative;
+		}
+
+		.upload-card.drag-over {
+			border-color: var(--pnoc-orange);
+			background: #eef4fa;
+		}
+
+		.upload-card input[type="file"] {
+			position: absolute;
+			inset: 0;
+			opacity: 0;
+			cursor: pointer;
+			width: 100%;
+			height: 100%;
+		}
+
+		.upload-icon {
+			font-size: 2.5rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.upload-card p {
+			color: var(--pnoc-muted);
+			font-size: 0.95rem;
+			margin-top: 0.4rem;
+		}
+
+		.upload-card strong {
+			font-size: 1.05rem;
+			color: var(--pnoc-black);
+		}
+
+		.upload-card .file-name {
+			display: inline-block;
+			margin-top: 0.6rem;
+			background: #dce9f5;
+			color: var(--pnoc-orange);
+			font-weight: 600;
+			font-size: 0.9rem;
+			padding: 0.25rem 0.75rem;
+			border-radius: 999px;
+		}
+
+		.data-form {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 1.25rem;
+		}
+
+		.form-group {
+			display: flex;
+			flex-direction: column;
+			gap: 0.35rem;
+		}
+
+		.form-group.full-width {
+			grid-column: 1 / -1;
+		}
+
+		.form-group label {
+			font-size: 0.88rem;
+			font-weight: 600;
+			color: var(--pnoc-muted);
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+		}
+
+		.form-group input,
+		.form-group textarea,
+		.form-group select {
+			border: 1px solid #d2dce6;
+			border-radius: 8px;
+			padding: 0.6rem 0.85rem;
+			font-size: 0.97rem;
+			font-family: inherit;
+			color: var(--pnoc-black);
+			background: var(--pnoc-white);
+			transition: border-color 0.2s ease, box-shadow 0.2s ease;
+			outline: none;
+		}
+
+		.form-group input:focus,
+		.form-group textarea:focus,
+		.form-group select:focus {
+			border-color: var(--pnoc-orange);
+			box-shadow: 0 0 0 3px rgba(47, 93, 138, 0.12);
+		}
+
+		.form-group textarea {
+			resize: vertical;
+			min-height: 80px;
+		}
+
+		.form-actions {
+			grid-column: 1 / -1;
+			display: flex;
+			gap: 0.75rem;
+			flex-wrap: wrap;
+			margin-top: 0.5rem;
+		}
+
+		.btn-form {
+			padding: 0.65rem 1.5rem;
+			border-radius: 8px;
+			font-weight: 600;
+			font-size: 0.95rem;
+			border: none;
+			cursor: pointer;
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.btn-form-primary {
+			background: var(--pnoc-orange);
+			color: var(--pnoc-white);
+			box-shadow: 0 4px 12px rgba(47, 93, 138, 0.3);
+		}
+
+		.btn-form-secondary {
+			background: transparent;
+			border: 1px solid #c5d3de;
+			color: var(--pnoc-muted);
+		}
+
+		.btn-form:hover {
+			transform: translateY(-1px);
+		}
+
+		.upload-status {
+			display: none;
+			margin-top: 1.25rem;
+			padding: 0.75rem 1rem;
+			border-radius: 8px;
+			font-size: 0.95rem;
+			font-weight: 500;
+		}
+
+		.upload-status.success {
+			display: block;
+			background: #e6f4ea;
+			color: #2d6a4f;
+			border: 1px solid #b7dfca;
+		}
+
+		.upload-status.error {
+			display: block;
+			background: #fdecea;
+			color: #a32a2a;
+			border: 1px solid #f5c6c6;
+		}
+
+		@media (max-width: 900px) {
+			.data-form {
+				grid-template-columns: 1fr;
+			}
+
+			.form-group.full-width {
+				grid-column: 1;
+			}
+
+			.form-actions {
+				grid-column: 1;
+			}
+		}
+
 		nav a {
 			text-decoration: none;
 			color: var(--pnoc-black);
@@ -367,6 +546,7 @@
 					<li><a href="#home">Home</a></li>
 					<li><a href="#services">Services</a></li>
 					<li><a href="#about">About</a></li>
+					<li><a href="#data-upload">Data Upload</a></li>
 					<li><a href="#contact">Contact</a></li>
 				</ul>
 			</nav>
@@ -448,6 +628,76 @@
 				<img src="123.jpg" onerror="this.onerror=null;this.src='bg.webp';" alt="Energy and infrastructure visual" />
 			</div>
 		</section>
+
+		<!-- ── Excel Data Upload Section ── -->
+		<section class="upload-section" id="data-upload">
+			<div class="container">
+				<h2 class="section-title">Document Data Upload</h2>
+				<p class="section-intro">
+					Upload an Excel file (.xlsx or .xls) to automatically fill in the document
+					fields below. Column headers in your spreadsheet must match the field names.
+				</p>
+
+				<!-- File drop zone -->
+				<div class="upload-card" id="dropZone">
+					<input
+						type="file"
+						id="excelFileInput"
+						accept=".xlsx,.xls"
+						aria-label="Upload Excel file"
+					/>
+					<div class="upload-icon">📂</div>
+					<strong>Click to browse or drag &amp; drop your Excel file here</strong>
+					<p>Supported formats: .xlsx, .xls</p>
+					<span class="file-name" id="fileNameLabel" style="display:none"></span>
+				</div>
+
+				<div class="upload-status" id="uploadStatus" role="status" aria-live="polite"></div>
+
+				<!-- Auto-filled form -->
+				<form class="data-form" id="dataForm">
+					<div class="form-group">
+						<label for="fieldDocTitle">Document Title</label>
+						<input type="text" id="fieldDocTitle" name="Document Title" placeholder="Enter or upload from Excel" />
+					</div>
+					<div class="form-group">
+						<label for="fieldRefNumber">Reference Number</label>
+						<input type="text" id="fieldRefNumber" name="Reference Number" placeholder="e.g. PNOC-2025-001" />
+					</div>
+					<div class="form-group">
+						<label for="fieldDate">Date</label>
+						<input type="text" id="fieldDate" name="Date" placeholder="YYYY-MM-DD" />
+					</div>
+					<div class="form-group">
+						<label for="fieldPreparedBy">Prepared By</label>
+						<input type="text" id="fieldPreparedBy" name="Prepared By" placeholder="Full name" />
+					</div>
+					<div class="form-group">
+						<label for="fieldDepartment">Department / Office</label>
+						<input type="text" id="fieldDepartment" name="Department" placeholder="e.g. Energy Resources Division" />
+					</div>
+					<div class="form-group">
+						<label for="fieldProject">Project / Program</label>
+						<input type="text" id="fieldProject" name="Project" placeholder="Project or program name" />
+					</div>
+					<div class="form-group">
+						<label for="fieldRegion">Region</label>
+						<input type="text" id="fieldRegion" name="Region" placeholder="e.g. NCR, Region VII" />
+					</div>
+					<div class="form-group">
+						<label for="fieldStatus">Status</label>
+						<input type="text" id="fieldStatus" name="Status" placeholder="e.g. Ongoing, Completed" />
+					</div>
+					<div class="form-group full-width">
+						<label for="fieldRemarks">Remarks</label>
+						<textarea id="fieldRemarks" name="Remarks" placeholder="Additional notes or remarks"></textarea>
+					</div>
+					<div class="form-actions">
+						<button type="button" class="btn-form btn-form-primary" id="btnClearForm">Clear Form</button>
+					</div>
+				</form>
+			</div>
+		</section>
 	</main>
 
 	<footer id="contact">
@@ -456,5 +706,162 @@
 			sustainable energy development.
 		</div>
 	</footer>
+
+	<!-- SheetJS for Excel parsing -->
+	<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+	<script>
+		(function () {
+			"use strict";
+
+			var dropZone = document.getElementById("dropZone");
+			var fileInput = document.getElementById("excelFileInput");
+			var fileNameLabel = document.getElementById("fileNameLabel");
+			var statusEl = document.getElementById("uploadStatus");
+			var clearBtn = document.getElementById("btnClearForm");
+
+			/** Map from Excel column header (case-insensitive, trimmed) → form input id */
+			var FIELD_MAP = {
+				"document title": "fieldDocTitle",
+				"reference number": "fieldRefNumber",
+				"ref number": "fieldRefNumber",
+				"date": "fieldDate",
+				"prepared by": "fieldPreparedBy",
+				"department": "fieldDepartment",
+				"office": "fieldDepartment",
+				"department / office": "fieldDepartment",
+				"project": "fieldProject",
+				"program": "fieldProject",
+				"project / program": "fieldProject",
+				"region": "fieldRegion",
+				"status": "fieldStatus",
+				"remarks": "fieldRemarks",
+			};
+
+			function showStatus(message, type) {
+				statusEl.textContent = message;
+				statusEl.className = "upload-status " + type;
+			}
+
+			function clearStatus() {
+				statusEl.className = "upload-status";
+				statusEl.textContent = "";
+			}
+
+			/** Format a value for display; converts Date objects to YYYY-MM-DD strings. */
+			function formatValue(val) {
+				if (val instanceof Date) {
+					var y = val.getFullYear();
+					var m = String(val.getMonth() + 1).padStart(2, "0");
+					var d = String(val.getDate()).padStart(2, "0");
+					return y + "-" + m + "-" + d;
+				}
+				return val !== undefined && val !== null ? String(val) : "";
+			}
+
+			/** Fill form fields from a single data row (plain object keyed by header). */
+			function fillFormFromRow(row) {
+				var filled = 0;
+				Object.keys(row).forEach(function (header) {
+					var key = String(header).trim().toLowerCase();
+					var fieldId = FIELD_MAP[key];
+					if (fieldId) {
+						var el = document.getElementById(fieldId);
+						if (el) {
+							el.value = formatValue(row[header]);
+							filled++;
+						}
+					}
+				});
+				return filled;
+			}
+
+			/** Parse an ArrayBuffer containing an Excel file and fill the form. */
+			function processExcelBuffer(buffer, fileName) {
+				try {
+					var workbook = XLSX.read(buffer, { type: "array", cellDates: true });
+					var sheetName = workbook.SheetNames[0];
+					if (!sheetName) {
+						showStatus("The Excel file contains no sheets.", "error");
+						return;
+					}
+					var sheet = workbook.Sheets[sheetName];
+					var rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+					if (!rows || rows.length === 0) {
+						showStatus("No data rows found in the Excel file.", "error");
+						return;
+					}
+					var filled = fillFormFromRow(rows[0]);
+					if (filled === 0) {
+						showStatus(
+							"File uploaded but no matching column headers were found. " +
+							"Use headers such as: Document Title, Reference Number, Date, Prepared By, Department, Project, Region, Status, Remarks.",
+							"error"
+						);
+					} else {
+						showStatus(
+							"✔ \"" + fileName + "\" uploaded successfully — " + filled + " field(s) filled from the first data row.",
+							"success"
+						);
+					}
+					fileNameLabel.textContent = fileName;
+					fileNameLabel.style.display = "inline-block";
+				} catch (err) {
+					showStatus("Failed to parse Excel file. Please ensure it is a valid .xlsx or .xls file.", "error");
+				}
+			}
+
+			/** Read a File object and trigger Excel processing. */
+			function handleFile(file) {
+				if (!file) return;
+				var ext = file.name.split(".").pop().toLowerCase();
+				if (ext !== "xlsx" && ext !== "xls") {
+					showStatus("Please upload a valid Excel file (.xlsx or .xls).", "error");
+					return;
+				}
+				clearStatus();
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					processExcelBuffer(new Uint8Array(e.target.result), file.name);
+				};
+				reader.onerror = function () {
+					showStatus("Error reading file. Please try again.", "error");
+				};
+				reader.readAsArrayBuffer(file);
+			}
+
+			/* File input change */
+			fileInput.addEventListener("change", function () {
+				if (fileInput.files && fileInput.files[0]) {
+					handleFile(fileInput.files[0]);
+				}
+			});
+
+			/* Drag-and-drop */
+			dropZone.addEventListener("dragover", function (e) {
+				e.preventDefault();
+				dropZone.classList.add("drag-over");
+			});
+			dropZone.addEventListener("dragleave", function () {
+				dropZone.classList.remove("drag-over");
+			});
+			dropZone.addEventListener("drop", function (e) {
+				e.preventDefault();
+				dropZone.classList.remove("drag-over");
+				var files = e.dataTransfer && e.dataTransfer.files;
+				if (files && files[0]) {
+					handleFile(files[0]);
+				}
+			});
+
+			/* Clear form */
+			clearBtn.addEventListener("click", function () {
+				document.getElementById("dataForm").reset();
+				fileNameLabel.style.display = "none";
+				fileNameLabel.textContent = "";
+				fileInput.value = "";
+				clearStatus();
+			});
+		})();
+	</script>
 </body>
 </html>
