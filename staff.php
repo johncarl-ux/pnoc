@@ -200,9 +200,37 @@
 
 		.tools {
 			display: grid;
-			grid-template-columns: repeat(5, minmax(0, 1fr));
+			grid-template-columns: repeat(6, minmax(0, 1fr));
 			gap: 0.6rem;
 			margin-bottom: 0.9rem;
+		}
+
+		.import-label {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			padding: 0.5rem 0.55rem;
+			border-radius: 8px;
+			border: 1px solid #17653e;
+			background: #17653e;
+			color: #fff;
+			font: inherit;
+			font-weight: 600;
+			cursor: pointer;
+			text-align: center;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.import-label:hover {
+			background: #115030;
+			border-color: #115030;
+		}
+
+		.import-label input[type="file"] {
+			display: none;
 		}
 
 		.tools select,
@@ -410,6 +438,10 @@
 						<span class="feature-icon" aria-hidden="true">➕</span>
 						<span>Add Data</span>
 					</a>
+					<a class="feature-link" href="#importLabel">
+						<span class="feature-icon" aria-hidden="true">📥</span>
+						<span>Import</span>
+					</a>
 					<a class="feature-link" href="#exportExcel">
 						<span class="feature-icon" aria-hidden="true">📤</span>
 						<span>Export</span>
@@ -450,6 +482,10 @@
 				</select>
 				<input id="searchInput" type="text" placeholder="Search file or holder..." aria-label="Search records" />
 				<button id="applySort" type="button">Apply Sort</button>
+				<label class="import-label" id="importLabel" title="Import records from an Excel or CSV file">
+					<span id="importLabelText">📥 Import Excel/CSV</span>
+					<input id="importExcel" type="file" accept=".xlsx,.xls,.csv" aria-label="Import Excel file" />
+				</label>
 				<button id="exportExcel" type="button">📤 Generate Excel Report</button>
 			</div>
 
@@ -795,6 +831,129 @@
 			link.click();
 			URL.revokeObjectURL(link.href);
 		};
+
+		const parseImportDate = (value) => {
+			if (value === null || value === undefined || String(value).trim() === "") {
+				return "";
+			}
+			if (value instanceof Date) {
+				return Number.isNaN(value.getTime()) ? "" : value.toISOString().slice(0, 10);
+			}
+			const str = String(value).trim();
+			const date = new Date(str);
+			if (!Number.isNaN(date.getTime())) {
+				return date.toISOString().slice(0, 10);
+			}
+			return str;
+		};
+
+		const importFromExcel = async (file) => {
+			if (!window.XLSX) {
+				alert("XLSX library is not available. Please refresh the page and try again.");
+				return;
+			}
+
+			const labelText = document.getElementById("importLabelText");
+			const importInput = document.getElementById("importExcel");
+			labelText.textContent = "Importing…";
+
+			const reader = new FileReader();
+			reader.onload = async (event) => {
+				try {
+					const data = new Uint8Array(event.target.result);
+					const workbook = XLSX.read(data, { type: "array" });
+					const sheet = workbook.Sheets[workbook.SheetNames[0]];
+					const rows = XLSX.utils.sheet_to_json(sheet, {
+						header: 1,
+						raw: true,
+						cellDates: true,
+						defval: ""
+					});
+
+					if (rows.length < 2) {
+						alert("The file is empty or has no data rows.");
+						return;
+					}
+
+					const FIELD_MAP = {
+						"document number": "documentNumber",
+						"copy number": "copyNumber",
+						"copy holder's name": "copyHolder",
+						"copy holder": "copyHolder",
+						"document title / name of manual": "documentTitle",
+						"document title": "documentTitle",
+						"issuance date": "issuanceDate",
+						"revision number": "revisionNumber",
+						"retrieval date": "retrievalDate",
+						"revision no. of retrieved doc": "retrievedRevision",
+						"retrieved revision": "retrievedRevision"
+					};
+
+					const headers = rows[0].map((header) => String(header).trim().toLowerCase());
+					const fieldIndices = {};
+					headers.forEach((header, idx) => {
+						const field = FIELD_MAP[header];
+						if (field && fieldIndices[field] === undefined) {
+							fieldIndices[field] = idx;
+						}
+					});
+
+					const dataRows = rows.slice(1).filter((row) =>
+						row.some((cell) => String(cell).trim() !== "")
+					);
+
+					if (!dataRows.length) {
+						alert("No data rows found in the file.");
+						return;
+					}
+
+					let successCount = 0;
+					let errorCount = 0;
+
+					for (const row of dataRows) {
+						const record = {
+							documentNumber: String(row[fieldIndices.documentNumber] ?? "").trim(),
+							copyNumber: String(row[fieldIndices.copyNumber] ?? "").trim(),
+							copyHolder: String(row[fieldIndices.copyHolder] ?? "").trim(),
+							documentTitle: String(row[fieldIndices.documentTitle] ?? "").trim(),
+							issuanceDate: parseImportDate(row[fieldIndices.issuanceDate]),
+							revisionNumber: String(row[fieldIndices.revisionNumber] ?? "0").trim(),
+							retrievalDate: parseImportDate(row[fieldIndices.retrievalDate]),
+							retrievedRevision: String(row[fieldIndices.retrievedRevision] ?? "").trim()
+						};
+
+						if (!record.documentNumber || !record.copyNumber || !record.copyHolder || !record.documentTitle) {
+							errorCount++;
+							continue;
+						}
+
+						try {
+							await apiRequest("POST", record);
+							successCount++;
+						} catch {
+							errorCount++;
+						}
+					}
+
+					alert(`Import complete: ${successCount} record(s) imported, ${errorCount} skipped or failed.`);
+					activeTab = "ALL";
+					await loadRecords();
+				} catch (error) {
+					alert("Failed to read the file: " + (error.message || "Unknown error."));
+				} finally {
+					labelText.textContent = "📥 Import Excel/CSV";
+					importInput.value = "";
+				}
+			};
+			reader.readAsArrayBuffer(file);
+		};
+
+		document.getElementById("importExcel").addEventListener("change", (event) => {
+			const file = event.target.files[0];
+			if (file) {
+				importFromExcel(file);
+			}
+		});
 
 		document.getElementById("applySort").addEventListener("click", () => {
 			currentSort = {
