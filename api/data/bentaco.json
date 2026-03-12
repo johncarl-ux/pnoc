@@ -1,0 +1,622 @@
+[
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "2025-040",
+        "assetNumber": "N/A",
+        "itemDescription": "ANTI-THEFT LOCK, KENSINGTON MICROSAVER 2.0 (FOR NC25-00181)",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 0,
+        "mrNo": "PAR 2025-01-047",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "MS25-175",
+        "assetNumber": "N/A",
+        "itemDescription": "WIRELESS MOUSE (FOR NC25-00181)",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 0,
+        "mrNo": "PAR 2025-01-047",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "NC25-00181",
+        "assetNumber": "N/A",
+        "itemDescription": "LIGHTWEIGHT LAPTOP MSI MODERN 15 F13M (WITH BAG AND CHARGER)",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 55275,
+        "mrNo": "PAR 2025-01-047",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "HSC24-00021",
+        "assetNumber": "N/A",
+        "itemDescription": "BARCODE SCANNER, LOGICOWL WITH STAND BRACKET HOLDER",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 2822,
+        "mrNo": "ICS LV2024-07-018",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "UPS23-00750",
+        "assetNumber": "N/A",
+        "itemDescription": "UPS, KEBOS PG PLUS 1500VA",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 7885,
+        "mrNo": "ICS HV2023-01-074",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "NO TAG",
+        "assetNumber": "N/A",
+        "itemDescription": "PNOC FLAG, 4 X 7 FEET, (4PCS - 1PC) 3 PCS.",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 16000,
+        "mrNo": "ICS LV2022-09-015",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "NO TAG",
+        "assetNumber": "N/A",
+        "itemDescription": "PHILIPPINE FLAG, 4 X 8 FEET, (8PCS.) - 1pc. RWM2025-05-167",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 4200,
+        "mrNo": "ICS LV2022-09-015",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "2020-087",
+        "assetNumber": "Paper Cutter",
+        "itemDescription": "N/A",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 1080,
+        "mrNo": "2021-11-038",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "2020-083A",
+        "assetNumber": "N/A",
+        "itemDescription": "GTC Wall Frame SL 182",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 298.75,
+        "mrNo": "2021-11-038",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "2020-082A",
+        "assetNumber": "N/A",
+        "itemDescription": "GTC Wall Frame SL 182",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 298.75,
+        "mrNo": "2021-11-038",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "2020-081A",
+        "assetNumber": "N/A",
+        "itemDescription": "GTC Wall Frame SL 182",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 298.75,
+        "mrNo": "2021-11-038",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "2020-080A",
+        "assetNumber": "N/A",
+        "itemDescription": "GTC Wall Frame SL182",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 298.75,
+        "mrNo": "2021-11-038",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "2020-079",
+        "assetNumber": "N/A",
+        "itemDescription": "GTC Wall Frame SL 182",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 298.75,
+        "mrNo": "2021-11-038",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "TR20-00008",
+        "assetNumber": "N/A",
+        "itemDescription": "BIOMETRICS MACHINE, MULTIBIO 800",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 12500,
+        "mrNo": "2021-11-038",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "19-0017",
+        "assetNumber": "N/A",
+        "itemDescription": "EXTENSION CORD WITH INDIVIDUAL SWITCH",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 749.75,
+        "mrNo": "ICS 2019-048",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "MO18-00685",
+        "assetNumber": "N/A",
+        "itemDescription": "LED MONITOR, AOC 21.5\"",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 0,
+        "mrNo": "2021-05-017",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "SW15-00524",
+        "assetNumber": "N/A",
+        "itemDescription": "0031-0815-000140 SOFTWARE: MICROSOFT OFFICE 2013",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 9674,
+        "mrNo": "2021-05-017",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "KB18-00745",
+        "assetNumber": "N/A",
+        "itemDescription": "USB KEYBOARD, A4 TECH",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 0,
+        "mrNo": "2021-05-017",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "MS18-012",
+        "assetNumber": "N/A",
+        "itemDescription": "USB MOUSE, A4 TECH",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 0,
+        "mrNo": "2021-05-017",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    },
+    {
+        "itemId": "BEN-00001",
+        "propertyNumber": "CPU18-00741",
+        "assetNumber": "N/A",
+        "itemDescription": "0031-1218-000009 DESKTOP COMPUTER, INTEL CORE i5",
+        "building": "",
+        "room": "",
+        "department": "",
+        "storageArea": "",
+        "itemLocation": "",
+        "assignedEmployee": "",
+        "acquisitionCost": 38107.14,
+        "mrNo": "2021-05-017",
+        "itemStatus": "Usable",
+        "allocationType": "",
+        "allocatedTo": "",
+        "allocationTo": "",
+        "allocationDate": "",
+        "returnDate": "",
+        "allocationNotes": "",
+        "dateAdded": "10 Mar 2026, 13:18",
+        "lastUpdated": "10 Mar 2026, 13:18",
+        "historyLog": [
+            {
+                "type": "created",
+                "title": "Asset record created",
+                "details": "Imported via PDF bulk upload",
+                "at": "3/10/2026, 1:18:15 PM"
+            }
+        ]
+    }
+]
