@@ -826,11 +826,13 @@
         }
 
         .items-table-wrap {
-            overflow-x: auto;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            min-height: 400px;
+            overflow: hidden;
+            border-radius: 12px;
+            min-height: 320px;
             position: relative;
+            background: white;
+            box-shadow: 0 6px 18px rgba(16,24,40,0.04);
+            border: 1px solid rgba(15,23,42,0.06);
         }
 
         .items-table-wrap.loading::after {
@@ -858,34 +860,53 @@
 
         .items-table {
             width: 100%;
-            border-collapse: collapse;
-            min-width: 900px;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 760px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
         }
 
         .items-table th,
         .items-table td {
-            padding: 0.65rem 0.75rem;
+            padding: 0.75rem 1rem;
             text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.8rem;
+            border-bottom: 1px solid rgba(15,23,42,0.06);
+            vertical-align: middle;
         }
 
         .items-table th {
-            background: #f8fafc;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            letter-spacing: 0.03em;
+            background: linear-gradient(180deg,#ffffff,#fbfdff);
+            font-weight: 700;
+            color: #1f2937;
+            text-transform: none;
+            font-size: 0.82rem;
+            letter-spacing: 0.01em;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            box-shadow: 0 2px 0 rgba(15,23,42,0.02);
+        }
+
+        .items-table tbody tr:nth-child(even) {
+            background: #fbfdff;
         }
 
         .items-table tbody tr:hover {
-            background: #f8fafc;
+            background: #f1f5f9;
         }
 
         .items-table tbody tr:last-child td {
             border-bottom: none;
         }
+
+        /* Compact badges and actions */
+        .source-badge { background: #f8fafc; color: #334155; font-weight:600; }
+
+        /* Area items (smaller table used in the right panel) */
+        .area-items-table { width:100%; border-collapse: collapse; font-size:0.86rem; }
+        .area-items-table th, .area-items-table td { padding:0.5rem 0.65rem; border-bottom:1px solid rgba(15,23,42,0.04); }
+        .area-items-table th { font-weight:700; color:#475569; font-size:0.72rem; text-transform:none; }
 
         .source-badge {
             display: inline-block;
@@ -901,36 +922,40 @@
             display: inline-flex;
             align-items: center;
             gap: 0.35rem;
-            padding: 0.25rem 0.6rem;
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #dc2626;
+            padding: 0.28rem 0.7rem;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #166534;
         }
 
         .location-tag .pin {
-            font-size: 0.7rem;
+            font-size: 0.78rem;
+            color: #16a34a;
         }
 
         .location-tag .remove {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 16px;
-            height: 16px;
-            border: 1px solid #fecaca;
-            border-radius: 4px;
-            background: white;
-            color: #dc2626;
-            font-size: 0.65rem;
+            width: 18px;
+            height: 18px;
+            border: 1px solid rgba(15,23,42,0.06);
+            border-radius: 6px;
+            background: #ffffff;
+            color: #475569;
+            font-size: 0.68rem;
             cursor: pointer;
-            margin-left: 0.25rem;
+            margin-left: 0.35rem;
+            transition: all 0.12s ease;
         }
 
         .location-tag .remove:hover {
-            background: #fecaca;
+            background: #f8fafc;
+            color: #111827;
+            border-color: rgba(15,23,42,0.12);
         }
 
         .location-select {
@@ -961,19 +986,21 @@
         }
 
         .delete-btn {
-            padding: 0.35rem 0.7rem;
-            border: 1px solid #fecaca;
-            border-radius: 6px;
-            background: #fef2f2;
-            color: #dc2626;
-            font-size: 0.75rem;
-            font-weight: 500;
+            padding: 0.38rem 0.72rem;
+            border: 1px solid rgba(15,23,42,0.06);
+            border-radius: 8px;
+            background: #ffffff;
+            color: #374151;
+            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.14s ease;
         }
 
         .delete-btn:hover {
-            background: #fecaca;
+            background: #fff1f2;
+            border-color: rgba(220,38,38,0.12);
+            color: #b91c1c;
         }
 
         .items-pagination {
@@ -1320,7 +1347,6 @@
                                 <th>Asset Number</th>
                                 <th>Item Description</th>
                                 <th>Location</th>
-                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -1510,16 +1536,15 @@
                 });
                 if (itemsInZone.length > 0) {
                     areaItemsPanel.style.display = 'block';
-                    areaItemsList.innerHTML = `<table style="width:100%; font-size:0.8rem; border-collapse:collapse;">
-                        <thead><tr style="background:#f1f5f9;"><th style="padding:4px 8px; text-align:left;">Source</th><th style="padding:4px 8px; text-align:left;">Property #</th><th style="padding:4px 8px; text-align:left;">Asset #</th><th style="padding:4px 8px; text-align:left;">Description</th><th style="padding:4px 8px; text-align:left;">Status</th></tr></thead>
+                    areaItemsList.innerHTML = `<table class="area-items-table">
+                        <thead><tr><th>Source</th><th>Property #</th><th>Asset #</th><th>Description</th></tr></thead>
                         <tbody>
                         ${itemsInZone.map(item => `
                             <tr>
-                                <td style='padding:4px 8px;'>${item.source || '-'}</td>
-                                <td style='padding:4px 8px;'>${item.propertyNumber || item.property_number || '-'}</td>
-                                <td style='padding:4px 8px;'>${item.assetNumber || item.asset_number || '-'}</td>
-                                <td style='padding:4px 8px;'>${item.itemDescription || item.item_description || item.description || '-'}</td>
-                                <td style='padding:4px 8px;'>${item.status || item.condition || 'Usable'}</td>
+                                <td>${item.source || '-'}</td>
+                                <td>${item.propertyNumber || item.property_number || '-'}</td>
+                                <td>${item.assetNumber || item.asset_number || '-'}</td>
+                                <td>${item.itemDescription || item.item_description || item.description || '-'}</td>
                             </tr>
                         `).join('')}
                         </tbody>
@@ -1700,19 +1725,16 @@
             const pageItems = filteredItems.slice(start, end);
 
             if (pageItems.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #94a3b8;">No items found</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #94a3b8;">No items found</td></tr>';
                 return;
             }
-
-            // Collect all unique statuses from allItems
-            const allStatuses = Array.from(new Set(allItems.map(i => (i.status || i.condition || 'Usable').trim()))).filter(Boolean);
 
             tbody.innerHTML = pageItems.map((item, idx) => {
                 const propNum = item.propertyNumber || item.property_number || '-';
                 const assetNum = item.assetNumber || item.asset_number || '-';
                 const desc = item.itemDescription || item.item_description || item.description || '-';
                 const loc = item.location || '';
-                const status = item.status || item.condition || 'Usable';
+                
                 const globalIdx = start + idx;
 
                 let locationHTML;
@@ -1733,10 +1755,7 @@
                     `;
                 }
 
-                // Status dropdown
-                let statusHTML = `<select class="status-select" onchange="updateStatus(${globalIdx}, this.value)">
-                    ${allStatuses.map(opt => `<option value="${opt}"${opt === status ? ' selected' : ''}>${opt}</option>`).join('')}
-                </select>`;
+                
 
                 return `
                     <tr>
@@ -1745,7 +1764,6 @@
                         <td>${assetNum}</td>
                         <td>${desc}</td>
                         <td>${locationHTML}</td>
-                        <td>${statusHTML}</td>
                         <td><button class="delete-btn" onclick="deleteItem(${globalIdx})">Delete</button></td>
                     </tr>
                 `;
@@ -1818,16 +1836,7 @@
             filterItems();
         }
 
-        // Update status
-        function updateStatus(idx, value) {
-            const item = filteredItems[idx];
-            if (!item) return;
-            item.status = value;
-            saveItems();
-            updateCounts();
-            updateZoneCounts();
-            filterItems();
-        }
+        
 
         // Delete item
         function deleteItem(idx) {

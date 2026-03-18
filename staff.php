@@ -6,6 +6,7 @@
 	<title>PNOC Staff | Document View</title>
 	<meta name="description" content="Simple read-only document view." />
 	<link rel="icon" type="image/png" href="qw.png" />
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 	<style>
 		:root {
 			--pnoc-blue: #2f5d8a;
@@ -153,8 +154,10 @@
 		}
 
 		.hero-copy h1 {
+			font-family: 'Playfair Display', Georgia, serif;
 			font-size: clamp(1.2rem, 2.8vw, 1.8rem);
 			margin-bottom: 0.35rem;
+			font-weight: 600;
 		}
 
 		.hero-copy p {
@@ -278,10 +281,7 @@
 						<span class="feature-icon" aria-hidden="true">📋</span>
 						<span>Records</span>
 					</a>
-					<a class="feature-link" href="inventory.php">
-						<span class="feature-icon" aria-hidden="true">📦</span>
-						<span>Inventory</span>
-					</a>
+
 					<a class="feature-link" href="add-data-create.php">
 						<span class="feature-icon" aria-hidden="true">➕</span>
 						<span>Add Data</span>

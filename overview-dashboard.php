@@ -314,8 +314,9 @@
 			<div class="actions">
 				<a class="link icon-back" href="staff.php" aria-label="Back to Staff Tools" title="Back to Staff Tools">← Back</a>
 			</div>
-		</div>
-	</header>
+
+			</div>
+		</header>
 
 	<main class="container">
 		<section class="panel" aria-label="Document monitoring dashboard overview">

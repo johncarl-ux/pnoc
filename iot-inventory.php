@@ -8,6 +8,7 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 	<style>
@@ -20,7 +21,7 @@
 			   --border-color: #e2e8f0;
 			   --text-dark: #1e293b;
 			   --text-muted: #64748b;
-			   --sidebar-width: 240px;
+			--sidebar-width: 260px;
 			   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
 			   --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
 			   --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
@@ -53,6 +54,9 @@
 			   z-index: 100;
 			   box-shadow: var(--shadow-sm);
 		   }
+
+		/* unified sidebar font */
+		.sidebar { font-family: 'Inter', system-ui, -apple-system, sans-serif; font-size:14px }
 		   .sidebar-header {
 			   padding: 1.25rem 1rem;
 			   border-bottom: 1px solid var(--border-color);
@@ -64,9 +68,16 @@
 			text-decoration: none;
 			color: var(--text-dark);
 		}
-		.sidebar-brand img { width: 36px; height: 36px; object-fit: contain; }
-		.sidebar-brand-text { font-weight: 700; font-size: 1rem; }
-		.sidebar-brand-sub { font-size: 0.7rem; color: var(--text-muted); font-weight: 400; }
+			.sidebar-brand img { width: 36px; height: 36px; object-fit: contain; }
+			.sidebar-brand-text { font-weight: 700; font-size: 0.95rem; }
+			.sidebar-brand-sub { font-size: 0.7rem; color: var(--text-muted); font-weight: 400; }
+
+			/* Sidebar text color override: make all sidebar text black */
+			.sidebar { color: #000; }
+			.sidebar .sidebar-brand-text,
+			.sidebar .sidebar-brand-sub,
+			.sidebar .nav-link,
+			.sidebar .nav-section-title { color: #000; }
 		   .sidebar-nav { padding: 1rem 0.75rem; }
 		   .nav-section { margin-bottom: 1.5rem; }
 		   .nav-section-title {
@@ -78,15 +89,15 @@
 			   padding: 0 0.5rem;
 			   margin-bottom: 0.5rem;
 		   }
-		   .nav-link {
+			.nav-link {
 			   display: flex;
 			   align-items: center;
 			   gap: 0.75rem;
 			   padding: 0.65rem 0.75rem;
 			   border-radius: 8px;
 			   text-decoration: none;
-			   color: var(--text-dark);
-			   font-size: 0.875rem;
+				color: var(--text-dark);
+				font-size: 0.875rem;
 			   font-weight: 500;
 			   transition: all 0.2s ease;
 			   margin-bottom: 0.25rem;
@@ -121,12 +132,14 @@
 			   margin-left: var(--sidebar-width);
 			   padding: 1.5rem 2rem;
 		   }
-		   .page-header {
-			   display: flex;
-			   justify-content: space-between;
-			   align-items: flex-start;
-			   margin-bottom: 1.5rem;
-		   }
+		.page-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 1.5rem;
+		}
+		.home-btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.45rem 0.75rem; border-radius:8px; background:var(--card-bg); border:1px solid var(--border-color); color:var(--text-dark); text-decoration:none; font-weight:600; box-shadow:0 6px 18px rgba(2,6,23,0.06); transition:transform 140ms ease, box-shadow 140ms ease; }
+		.home-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(2,6,23,0.08); }
 		   .page-title { font-size: 1.75rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.25rem; }
 		   .page-subtitle { font-size: 0.875rem; color: var(--text-muted); }
 		   .content-card {
@@ -196,24 +209,36 @@
 		}
 		.hero-grid {
 			display: grid;
-			grid-template-columns: 1.2fr 0.8fr;
+			grid-template-columns: 1fr 1.1fr;
 			align-items: center;
-			gap: 0.8rem;
+			gap: 0.9rem;
 		}
 		.hero-copy { padding: 1.5rem; }
 		.hero-copy h2 {
-			font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+			font-family: 'Playfair Display', Georgia, serif;
+			font-size: clamp(1.4rem, 3.2vw, 2.2rem);
 			margin-bottom: 0.35rem;
 			font-weight: 600;
 			letter-spacing: -0.01em;
+			color: var(--text-dark);
+			line-height: 1.05;
 		}
 		.hero-copy p { color: var(--text-muted); font-size: 0.9rem; }
 		.hero-image {
 			width: 100%;
-			height: 160px;
+			height: 260px;
 			object-fit: cover;
 			border-left: 1px solid var(--border-color);
 			background: #eef4fa;
+			border-radius: 12px;
+			box-shadow: 0 12px 30px rgba(17,24,39,0.08);
+			transition: transform 220ms ease, box-shadow 220ms ease;
+			display: block;
+		}
+
+		.hero-image:hover {
+			transform: scale(1.03);
+			box-shadow: 0 20px 48px rgba(17,24,39,0.12);
 		}
 		.section-card {
 			background: var(--card-bg);
@@ -359,7 +384,7 @@
 		}
 		.badge.status-usable { background: #e9f8ef; border-color: #b8e6c6; color: #1f7a3f; }
 		.badge.status-maintenance { background: #fff8df; border-color: #f0db8f; color: #8a6a07; }
-		.badge.status-damaged { background: #fdecec; border-color: #e8b1b1; color: #9e2a2a; }
+			/* .badge.status-damaged removed — map damaged/defective/unusable to Retired */
 		.badge.status-retired { background: #f1f3f5; border-color: #d7dce1; color: #5f6872; }
 		.row-actions { display: flex; gap: 0.32rem; }
 		.row-actions button {
@@ -408,42 +433,62 @@
 			.main-content { margin-left: 0; padding: 1rem; }
 			.stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 		}
+
+		/* Unified sidebar override (applies new compact animated UI) */
+		.sidebar {
+			width: 240px;
+			background: linear-gradient(180deg,#ffffff,#fbfdff);
+			position: fixed;
+			top: 0;
+			left: 0;
+			height: 100vh;
+			box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+			overflow: hidden;
+			z-index: 200;
+		}
+
+		.sidebar .brand-link { display:flex; align-items:center; gap:0.75rem; padding:1rem; text-decoration:none; color:inherit; }
+		.sidebar .brand-link img { width:36px; height:36px; border-radius:6px; object-fit:cover }
+		.sidebar .brand-text { opacity:1; transform:translateX(0); white-space:nowrap; }
+
+		.sidebar-nav { padding:0.75rem; }
+		.nav-section { margin-top:0.75rem; padding-top:0.5rem; border-top:1px dashed rgba(0,0,0,0.04); }
+		.nav-section-title { font-size:0.65rem; font-weight:700; color:var(--text-muted); padding-left:0.5rem; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:0.06em }
+
+			.nav-link { display:flex; align-items:center; gap:0.75rem; padding:0.65rem; border-radius:10px; color:var(--text-muted); text-decoration:none; font-weight:600; font-size:0.82rem; transition:all .18s ease; margin-bottom:0.2rem }
+		.nav-icon { width:36px; height:36px; border-radius:8px; background:transparent; display:flex; align-items:center; justify-content:center; font-size:1.05rem }
+		.nav-label { opacity:1; transform:translateX(0); white-space:nowrap }
+		.nav-link:hover { background: var(--bg-body); color: var(--text-dark); }
+
+		.nav-link.active { background: var(--primary-glow); color: var(--primary); position:relative }
+		.nav-link.active::before { content: ''; position:absolute; left:0; top:8px; bottom:8px; width:4px; background:var(--primary); border-radius:4px }
+
+		@media (max-width: 768px) { .sidebar { transform: translateX(-100%); } .main-content { margin-left: 0; } }
+
 	</style>
 </head>
 <body>
 	<div class="app-layout">
-		<aside class="sidebar">
-			<div class="sidebar-header">
-				<a href="index.html" class="sidebar-brand">
-					<img src="qw.png" alt="PNOC Logo" />
-					<div>
-						<div class="sidebar-brand-text">PNOC Inventory</div>
-						<div class="sidebar-brand-sub">Management System</div>
+		<aside class="sidebar" aria-label="Primary Navigation">
+			<div>
+				<a href="index.html" class="brand-link">
+					<img src="qw.png" alt="PNOC" />
+					<div class="brand-text">
+						<div style="font-weight:700;">PNOC Inventory</div>
+						<div style="font-size:0.75rem;color:var(--text-muted);">Management System</div>
 					</div>
 				</a>
 			</div>
-			<nav class="sidebar-nav">
+			<nav class="sidebar-nav" role="navigation">
 				<div class="nav-section">
 					<div class="nav-section-title">Main Menu</div>
-					<a href="inventory-dashboard.php" class="nav-link">
-						<span class="nav-icon">⌂</span>
-						<span>Dashboard</span>
-					</a>
-					<a href="bentaco-inventory.php" class="nav-link">
-						<span class="nav-icon">☐</span>
-						<span>BENTACO Inventory</span>
-					</a>
-					<a href="iot-inventory.php" class="nav-link active">
-						<span class="nav-icon">◎</span>
-						<span>IOT Inventory</span>
-					</a>
+					<a href="inventory-dashboard.php" class="nav-link"><span class="nav-icon">⌂</span><span class="nav-label">Dashboard</span></a>
+					<a href="bentaco-inventory.php" class="nav-link"><span class="nav-icon">☐</span><span class="nav-label">BENTACO Inventory</span></a>
+					<a href="iot-inventory.php" class="nav-link active"><span class="nav-icon">◎</span><span class="nav-label">IOT Inventory</span></a>
 				</div>
 				<div class="nav-section">
 					<div class="nav-section-title">Management</div>
-					<a href="location-management.php" class="nav-link">
-						<span class="nav-icon">⊕</span>
-						<span>Location Management</span>
-					</a>
+					<a href="location-management.php" class="nav-link"><span class="nav-icon">⊕</span><span class="nav-label">Location Management</span></a>
 					   <!-- Item Allocation link removed -->
 					<a href="item-status-monitoring.php" class="nav-link">
 						<span class="nav-icon">◉</span>
@@ -462,8 +507,11 @@
 
 		<main class="main-content">
 			<div class="page-header">
-				<h1 class="page-title">IOT Inventory</h1>
-				<p class="page-subtitle" id="metaInfo">0 results</p>
+				<div>
+					<h1 class="page-title">IOT Inventory</h1>
+					<p class="page-subtitle" id="metaInfo">0 results</p>
+				</div>
+				<a href="index.html" class="home-btn">Home</a>
 			</div>
 
 			<div class="hero" aria-label="IOT inventory hero">
@@ -483,15 +531,15 @@
 				</div>
 				<div class="kpi-grid">
 					<div class="kpi">
-						<div class="kpi-label">Total Assets</div>
+						<div class="kpi-label">Total</div>
 						<div class="kpi-value" id="overviewTotalAssets">0</div>
 					</div>
 					<div class="kpi">
-						<div class="kpi-label">Visible Results</div>
+						<div class="kpi-label">Visible</div>
 						<div class="kpi-value" id="overviewVisibleAssets">0</div>
 					</div>
 					<div class="kpi">
-						<div class="kpi-label">Total Value</div>
+						<div class="kpi-label">Value</div>
 						<div class="kpi-value" id="overviewTotalValue">₱0.00</div>
 					</div>
 				</div>
@@ -798,7 +846,9 @@
 			if (text === "usable") return "Usable";
 			if (text === "under maintenance" || text === "maintenance") return "Under Maintenance";
 			if (text === "retired") return "Retired";
-			if (text === "damaged" || text === "not usable" || text === "defective" || text === "unusable") return "Damaged";
+			if (text === "damaged" || text === "not usable" || text === "defective" || text === "unusable") return "Retired";
+			if (text === "unusable") return "Retired";
+			if (text === "not usable") return "Retired";
 			return "Usable";
 		}
 
@@ -1317,7 +1367,7 @@
 			const normalized = normalizeStatus(status).toLowerCase();
 			if (normalized === "usable") return "status-usable";
 			if (normalized === "under maintenance") return "status-maintenance";
-			if (normalized === "damaged") return "status-damaged";
+			if (normalized === "retired") return "status-retired";
 			if (normalized === "retired") return "status-retired";
 			return "status-retired";
 		}

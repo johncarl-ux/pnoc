@@ -19,7 +19,7 @@
 			--border-color: #e2e8f0;
 			--text-dark: #1e293b;
 			--text-muted: #64748b;
-			--sidebar-width: 240px;
+			--sidebar-width: 260px;
 			--shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
 			--shadow-md: 0 4px 12px rgba(0,0,0,0.06);
 			--shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
@@ -59,9 +59,16 @@
 			text-decoration: none;
 			color: var(--text-dark);
 		}
-		.sidebar-brand img { width: 36px; height: 36px; object-fit: contain; }
-		.sidebar-brand-text { font-weight: 700; font-size: 1rem; }
+			.sidebar-brand img { width: 36px; height: 36px; object-fit: contain; }
+			.sidebar-brand-text { font-weight: 700; font-size: 0.9rem; }
 		.sidebar-brand-sub { font-size: 0.7rem; color: var(--text-muted); font-weight: 400; }
+
+		/* Sidebar text color override: make all sidebar text black */
+		.sidebar { color: #000; }
+		.sidebar .sidebar-brand-text,
+		.sidebar .sidebar-brand-sub,
+		.sidebar .nav-link,
+		.sidebar .nav-section-title { color: #000; }
 		.sidebar-nav { padding: 1rem 0.75rem; }
 		.nav-section { margin-bottom: 1.5rem; }
 		.nav-section-title {
@@ -73,15 +80,15 @@
 			padding: 0 0.5rem;
 			margin-bottom: 0.5rem;
 		}
-		.nav-link {
+			.nav-link {
 			display: flex;
 			align-items: center;
 			gap: 0.75rem;
 			padding: 0.65rem 0.75rem;
 			border-radius: 8px;
 			text-decoration: none;
-			color: var(--text-dark);
-			font-size: 0.875rem;
+				color: var(--text-dark);
+				font-size: 0.82rem;
 			font-weight: 500;
 			transition: all 0.2s ease;
 			margin-bottom: 0.25rem;
@@ -485,7 +492,7 @@
 			const workbook = XLSX.utils.book_new();
 			XLSX.utils.book_append_sheet(workbook, worksheet, "Report");
 			XLSX.writeFile(workbook, "inventory_report.xlsx");
-		}
+		}	
 
 		function exportPdf() {
 			const { jsPDF } = window.jspdf;
