@@ -303,6 +303,14 @@
 			}
 		}
 	</style>
+	<style>
+		/* Modern UI small overrides for consistent look */
+		:root{ --ui-bg:#fbfcfd; --panel-bg:#fff; --radius:12px; --shadow-soft:0 6px 20px rgba(16,24,40,0.06); --accent-blue:#3b82f6 }
+		body{background:var(--ui-bg)}
+		.panel{border-radius:var(--radius);box-shadow:var(--shadow-soft)}
+		.sidebar .nav-link{border-radius:999px}
+		/* Night mode removed */
+	</style>
 </head>
 <body>
 	<header>

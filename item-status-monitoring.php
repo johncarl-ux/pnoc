@@ -6,7 +6,10 @@
     <title>PNOC Inventory | Item Status Monitoring</title>
     <link rel="icon" href="qw.png" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
     <style>
         :root{--bg:#f6f8fb;--card:#fff;--muted:#64748b;--text:#0f172a;--accent:#2563eb;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--gray:#6b7280;--radius:12px;--sidebar:260px;--shadow:0 8px 30px rgba(2,6,23,0.06)}
         *{box-sizing:border-box}
@@ -51,8 +54,40 @@
         tbody tr:nth-child(even){background:#fbfdff}
         td{padding:12px;vertical-align:middle}
         tr:hover td{background:#fcfeff}
-		.status-badge{display:inline-block;padding:6px 10px;border-radius:999px;color:#fff;font-weight:700;font-size:13px}
-		.s-usable{background:linear-gradient(90deg,var(--green),#059669)}.s-repair{background:linear-gradient(90deg,var(--yellow),#d97706);color:#06121a}.s-retired{background:linear-gradient(90deg,var(--red),#dc2626)}.s-missing{background:#374151}
+		.thumb{width:96px;height:96px;border-radius:12px;object-fit:cover;border:1px solid #d6e1ec;background:#f8fafc;display:block;cursor:zoom-in;box-shadow:0 6px 16px rgba(15,23,42,0.08)}
+		.thumb-empty{width:96px;height:96px;border-radius:12px;border:1px dashed #cbd5e1;background:#f8fafc;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:11px;font-weight:600}
+		.image-viewer{position:fixed;inset:0;background:rgba(15,23,42,0.78);display:none;align-items:center;justify-content:center;z-index:9999;padding:24px}
+		.image-viewer.open{display:flex}
+		.image-viewer-card{background:#fff;border-radius:16px;max-width:min(92vw,1100px);max-height:92vh;padding:14px;box-shadow:0 24px 60px rgba(0,0,0,0.28);display:flex;flex-direction:column;gap:10px}
+		.image-viewer-card img{max-width:100%;max-height:78vh;object-fit:contain;border-radius:12px;background:#f8fafc}
+		.image-viewer-header{display:flex;justify-content:space-between;align-items:center;gap:10px}
+		.image-viewer-title{font-weight:700;color:#0f172a;font-size:14px}
+		.image-viewer-close{border:1px solid #d7e1ec;background:#fff;border-radius:10px;height:34px;padding:0 12px;font-weight:600;cursor:pointer}
+		.img-cell{display:flex;align-items:center;gap:10px}
+		.img-actions{display:flex;flex-direction:column;gap:6px}
+		.img-action-btn{height:28px;padding:0 10px;border-radius:8px;border:1px solid #d7e1ec;background:#fff;color:var(--text-dark);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+		.img-action-btn:hover{border-color:#b9c7d6;box-shadow:0 6px 14px rgba(15,23,42,0.06)}
+		.img-action-btn.danger{color:#b42318;border-color:#f2c7c3;background:#fff7f7}
+		.img-action-btn.danger:hover{border-color:#f0a39c;box-shadow:0 6px 14px rgba(180,35,24,0.08)}
+		.status-badge{
+			display:inline-flex;
+			align-items:center;
+			justify-content:center;
+			min-width:124px;
+			padding:7px 12px;
+			border-radius:999px;
+			color:#fff;
+			font-weight:700;
+			font-size:12px;
+			letter-spacing:.03em;
+			text-transform:uppercase;
+			border:1px solid transparent;
+			box-shadow:0 6px 14px rgba(15,23,42,0.12), inset 0 1px 0 rgba(255,255,255,0.25);
+		}
+		.s-retain{background:linear-gradient(135deg,#12b981,#0f8f68);border-color:#0f8f68}
+		.s-repair{background:linear-gradient(135deg,#f7b733,#dd8b00);color:#1f1400;border-color:#dd8b00}
+		.s-retired{background:linear-gradient(135deg,#f46d6d,#d33f3f);border-color:#c83535}
+		.s-missing{background:linear-gradient(135deg,#64748b,#475569);border-color:#475569}
         .expand{display:none;background:#fbfdff;padding:12px;border-top:1px solid #eef4fb}
         .bulk{display:none;align-items:center;gap:12px;padding:10px;border-radius:8px;background:linear-gradient(90deg,#fff,#fbfdff);box-shadow:var(--shadow);margin-bottom:12px}
 
@@ -62,7 +97,7 @@
 
 		/* Unified sidebar override: always-expanded */
 		.sidebar {
-			width: 260px;
+			width: 260px;	
 			background: linear-gradient(180deg,#ffffff,#fbfdff);
 			position: fixed;
 			top: 0;
@@ -90,6 +125,300 @@
 
 		.nav-link.active { background: linear-gradient(90deg,var(--primary,#4f46e5),var(--primary-light,#6366f1)); color: white; position:relative }
 		.nav-link.active::before { content: ''; position:absolute; left:0; top:8px; bottom:8px; width:4px; background:var(--primary,#4f46e5); border-radius:4px }
+
+		/* Professional readability refinements */
+		:root {
+			--text-dark: #000000;
+			--text-muted: #000000;
+			--line-soft: #dbe4ef;
+			--line-strong: #c9d6e5;
+		}
+		body {
+			background:
+				radial-gradient(circle at 8% 0%, rgba(37,99,235,0.07), transparent 38%),
+				radial-gradient(circle at 100% 100%, rgba(2,132,199,0.06), transparent 42%),
+				#f4f7fb;
+			color: var(--text-dark);
+		}
+		.main { padding: 34px 38px; }
+		.page-head h1 {
+			font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+			font-size: 36px;
+			font-weight: 700;
+			letter-spacing: 0.01em;
+			line-height: 1.15;
+			color: #000;
+		}
+		.page-head > div:first-child > div {
+			font-size: 16px;
+			font-family: Inter, 'Segoe UI', sans-serif;
+			font-weight: 500;
+			color: #000;
+		}
+		.hero {
+			background: #fff;
+			border: 1px solid #e4ebf3;
+			border-radius: 16px;
+			overflow: hidden;
+			margin-top: 18px;
+			box-shadow: 0 12px 28px rgba(15,23,42,0.08);
+		}
+		.hero-grid {
+			display: grid;
+			grid-template-columns: 1fr 1.1fr;
+			align-items: center;
+			gap: 18px;
+		}
+		.hero-copy { padding: 24px; }
+		.hero-copy h2 {
+			font-family: 'Playfair Display', Georgia, serif;
+			font-size: clamp(1.35rem, 2.4vw, 2rem);
+			line-height: 1.15;
+			margin-bottom: 8px;
+			color: #000;
+		}
+		.hero-copy p {
+			font-family: Inter, 'Segoe UI', sans-serif;
+			font-size: 15px;
+			line-height: 1.55;
+			color: #000;
+		}
+		.hero-image {
+			width: 100%;
+			height: 230px;
+			object-fit: cover;
+			border-left: 1px solid #e4ebf3;
+			display: block;
+		}
+
+		.home-btn,
+		button,
+		select,
+		input {
+			font-family: Inter, Segoe UI, system-ui, -apple-system, sans-serif;
+			font-size: 15px;
+			color: #000;
+		}
+		button,
+		.home-btn {
+			height: 40px;
+			padding: 0 14px;
+			border-radius: 10px;
+			border: 1px solid var(--line-soft);
+			background: #ffffff;
+			color: var(--text-dark);
+			font-weight: 600;
+			cursor: pointer;
+			transition: transform .14s ease, box-shadow .2s ease, border-color .2s ease;
+		}
+		button:hover,
+		.home-btn:hover {
+			transform: translateY(-1px);
+			border-color: var(--line-strong);
+			box-shadow: 0 8px 20px rgba(15,23,42,0.08);
+		}
+
+		.cards {
+			grid-template-columns: repeat(5, minmax(0, 1fr));
+			gap: 16px;
+			margin-top: 24px;
+		}
+		.card {
+			position: relative;
+			border: 1px solid #e4ebf3;
+			padding: 16px;
+			min-height: 88px;
+			border-radius: 14px;
+			background: linear-gradient(180deg,#ffffff,#fbfdff);
+			box-shadow: 0 10px 24px rgba(15,23,42,0.06);
+			transition: transform .16s ease, box-shadow .2s ease, border-color .2s ease;
+		}
+		.card[data-status]{cursor:pointer}
+		.card[data-status]::after{
+			content:'';
+			position:absolute;
+			left:10px;
+			right:10px;
+			bottom:0;
+			height:3px;
+			border-radius:3px 3px 0 0;
+			background:linear-gradient(90deg,#3b82f6,#60a5fa);
+			opacity:0;
+			transform:scaleX(.6);
+			transition:opacity .2s ease, transform .2s ease;
+		}
+		.card[data-status]:hover{
+			transform: translateY(-2px);
+			border-color:#cfdbea;
+			box-shadow: 0 14px 28px rgba(15,23,42,0.10);
+		}
+		.card.active{
+			border-color:#9ec3f5;
+			box-shadow: 0 16px 30px rgba(37,99,235,0.14);
+			background: linear-gradient(180deg,#ffffff,#f5f9ff);
+		}
+		.card.active::after{opacity:1;transform:scaleX(1)}
+		.card .icon {
+			width: 38px;
+			height: 38px;
+			border-radius: 10px;
+			box-shadow: inset 0 0 0 1px rgba(255,255,255,0.28);
+		}
+		.card .meta .num { font-size: 20px; line-height: 1.05; font-weight: 700; }
+		.card .meta .label { font-size: 12px; color: #111827; letter-spacing: .03em; text-transform: uppercase; font-weight: 600; }
+
+		.panel {
+			border: 1px solid #e4ebf3;
+			border-radius: 14px;
+			padding: 20px;
+			box-shadow: 0 12px 28px rgba(15,23,42,0.06);
+		}
+		.layout { gap: 18px; margin-top: 22px; }
+		.filters {
+			display: grid;
+			grid-template-columns: minmax(340px, 1.8fr) minmax(150px, .9fr) minmax(190px, 1fr) auto;
+			gap: 12px;
+			align-items: center;
+		}
+		.filters input,
+		.filters select {
+			height: 40px;
+			padding: 0 12px;
+			border-radius: 10px;
+			border: 1px solid var(--line-soft);
+			background: #fff;
+			color: #000;
+		}
+		.filters input::placeholder { color: #000; opacity: .7; }
+		.filters input:focus,
+		.filters select:focus {
+			outline: none;
+			border-color: #3b82f6;
+			box-shadow: 0 0 0 3px rgba(59,130,246,0.16);
+		}
+
+		.table-wrap { margin-top: 20px; overflow: hidden; }
+		table {
+			border: 1px solid #e4ebf3;
+			border-radius: 12px;
+			overflow: hidden;
+			font-size: 15px;
+		}
+		thead th {
+			background: linear-gradient(180deg, #fbfdff, #f4f8fc);
+			color: #000;
+			font-size: 13.5px;
+			font-weight: 700;
+			letter-spacing: .03em;
+			text-transform: uppercase;
+			border-bottom: 1px solid #d7e1ec;
+			padding-top: 13px;
+			padding-bottom: 13px;
+		}
+		td {
+			padding-top: 13px;
+			padding-bottom: 13px;
+			color: #000;
+			line-height: 1.4;
+			border-bottom: 1px solid #edf2f7;
+		}
+		tbody tr:nth-child(4n+1),
+		tbody tr:nth-child(4n+2) { background: #ffffff; }
+		tbody tr:nth-child(4n+3),
+		tbody tr:nth-child(4n+4) { background: #f8fbff; }
+		tr:hover td { background: #eef6ff; }
+
+		.status-badge {
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: .02em;
+			padding: 7px 11px;
+		}
+		.disposition-card {
+			margin-top: 18px;
+			background: #fff;
+			border: 1px solid #e4ebf3;
+			border-radius: 14px;
+			padding: 16px 18px;
+			box-shadow: 0 10px 22px rgba(15,23,42,0.05);
+		}
+		.disposition-head {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-family: Inter, 'Segoe UI', sans-serif;
+			font-size: 14px;
+			font-weight: 700;
+			color: #000;
+			margin-bottom: 8px;
+		}
+		.disposition-toggle {
+			height: 30px;
+			padding: 0 10px;
+			border-radius: 8px;
+			border: 1px solid #d7e1ec;
+			background: #fff;
+			color: #000;
+			font-size: 12px;
+			font-weight: 600;
+			cursor: pointer;
+		}
+		.disposition-toggle:hover { border-color: #b9c7d6; }
+		.disposition-body {
+			overflow: hidden;
+			max-height: 220px;
+			opacity: 1;
+			transform: translateY(0);
+			transition: max-height .32s ease, opacity .22s ease, transform .22s ease;
+		}
+		.disposition-card.collapsed .disposition-body {
+			max-height: 0;
+			opacity: 0;
+			transform: translateY(-4px);
+		}
+		.disposition-grid {
+			display: grid;
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			gap: 12px;
+		}
+		.disposition-pill {
+			border: 1px solid #d9e3ef;
+			border-radius: 10px;
+			padding: 10px 12px;
+			font-size: 13px;
+			font-weight: 600;
+			color: #000;
+			background: #f8fbff;
+		}
+		.disposition-pill span {
+			display: block;
+			font-size: 12px;
+			font-weight: 500;
+			margin-top: 2px;
+			color: #000;
+			opacity: .85;
+		}
+		.expand {
+			border-top: 1px dashed #d6e1ed;
+			background: #f6faff;
+		}
+
+		@media(max-width:1100px){
+			.main { padding: 24px 22px; }
+			.filters { grid-template-columns: 1fr 1fr; }
+			.cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+		}
+		@media(max-width:700px){
+			.main { padding: 16px 12px; }
+			.cards { grid-template-columns: 1fr; }
+			.card { min-height: 68px; }
+			.disposition-grid { grid-template-columns: 1fr; }
+		}
+		@media(max-width:900px){
+			.hero-grid { grid-template-columns: 1fr; }
+			.hero-image { height: 200px; border-left: 0; border-top: 1px solid #e4ebf3; }
+			.disposition-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+		}
 
 		@media (max-width: 768px) { .sidebar { transform: translateX(-100%); } .main { margin-left: 0; } }
 
@@ -129,17 +458,42 @@
 
         <main class="main">
 			<div class="page-head">
-				<div><h1>Item Status Monitoring</h1><div style="color:var(--muted);margin-top:6px">Overview and health of inventory</div></div>
-				<div style="display:flex;gap:8px;align-items:center"><a href="index.html" class="home-btn">Home</a><button onclick="render()" style="padding:10px;border-radius:8px">Refresh</button><button style="background:var(--accent);color:#fff;padding:10px;border-radius:8px;border:0">New Item</button></div>
+				<div><h1>Item Status Monitoring</h1></div>
+				<div style="display:flex;gap:8px;align-items:center"><a href="index.html" class="home-btn">Home</a></div>
 			</div>
+
+			<section class="hero" aria-label="Monitoring Overview">
+				<div class="hero-grid">
+					<div class="hero-copy">
+						<h2>Track Fast. Report Smart.</h2>
+						<p>Monitor status, destination, and images in one clean view. Export a professional PDF in seconds.</p>
+					</div>
+					<img src="as.jpg" alt="PNOC operations visual" class="hero-image" />
+				</div>
+			</section>
 
 			<div class="cards">
 				<div class="card" data-status="all"><div class="icon" style="background:linear-gradient(90deg,#60a5fa,#3b82f6)">T</div><div class="meta"><div class="num" id="totalAssets">0</div><div class="label">Active Assets</div></div></div>
-				<div class="card" data-status="Usable"><div class="icon" style="background:linear-gradient(90deg,#34d399,#10b981)">U</div><div class="meta"><div class="num" id="usableCount">0</div><div class="label">Usable</div></div></div>
-				<div class="card" data-status="Needs Repair"><div class="icon" style="background:linear-gradient(90deg,#facc15,#f59e0b)">R</div><div class="meta"><div class="num" id="repairCount">0</div><div class="label">Needs Repair</div></div></div>
-				<div class="card" data-status="Retired"><div class="icon" style="background:linear-gradient(90deg,#9ca3af,#6b7280)">R</div><div class="meta"><div class="num" id="retiredCount">0</div><div class="label">Retired</div></div></div>
-				<div class="card" data-status="Missing"><div class="icon" style="background:linear-gradient(90deg,#94a3b8,#6b7280)">M</div><div class="meta"><div class="num" id="missingCount">0</div><div class="label">Missing</div></div></div>
+				<div class="card" data-status="Retain"><div class="icon" style="background:linear-gradient(90deg,#34d399,#10b981)">R</div><div class="meta"><div class="num" id="retainCount">0</div><div class="label">Retain</div></div></div>
+				<div class="card" data-status="Transfer"><div class="icon" style="background:linear-gradient(90deg,#facc15,#f59e0b)">T</div><div class="meta"><div class="num" id="transferCount">0</div><div class="label">Transfer</div></div></div>
+				<div class="card" data-status="Dispose"><div class="icon" style="background:linear-gradient(90deg,#f87171,#ef4444)">D</div><div class="meta"><div class="num" id="disposeCount">0</div><div class="label">Dispose</div></div></div>
+				<div class="card" data-status="Store/Warehouse"><div class="icon" style="background:linear-gradient(90deg,#94a3b8,#6b7280)">S</div><div class="meta"><div class="num" id="warehouseCount">0</div><div class="label">Store/Warehouse</div></div></div>
 			</div>
+
+			<section class="disposition-card" aria-label="Disposition Guide">
+				<div class="disposition-head">
+					<span>Disposition Guide</span>
+					<button id="dispositionToggle" class="disposition-toggle" type="button" onclick="toggleDispositionGuide()" aria-expanded="true">Hide</button>
+				</div>
+				<div class="disposition-body" id="dispositionBody">
+					<div class="disposition-grid">
+						<div class="disposition-pill">Retain<span>Keep in active use</span></div>
+						<div class="disposition-pill">Transfer<span>Move to another unit</span></div>
+						<div class="disposition-pill">Dispose<span>For retirement/disposal</span></div>
+						<div class="disposition-pill">Store/Warehouse<span>For storage and reserve</span></div>
+					</div>
+				</div>
+			</section>
 
 			<div class="layout">
 				<div>
@@ -147,35 +501,29 @@
                         <div style="display:flex;justify-content:space-between;align-items:center">
                             <div class="filters" style="flex:1">
                                 <input id="search" placeholder="Search item, number, notes, serial" />
-                                <select id="group"><option value="all">Group: All</option><option value="BENTACO">BENTACO</option><option value="IOT">IOT</option></select>
-								<select id="status"><option value="all">Status: All</option><option value="Usable">Usable</option><option value="Needs Repair">Needs Repair</option><option value="Retired">Retired</option><option value="Missing">Missing</option></select>
-								<!-- allocation filter removed (no longer used) -->
-                                <button id="clear">Clear Filters</button>
                             </div>
                             <div style="display:flex;gap:8px;margin-left:12px">
-                                <button id="exportCsv">Export CSV</button>
-                                <button id="exportXls">Export Excel</button>
+								<button id="exportPdf">Export PDF</button>
                                 <button id="print">Print</button>
                             </div>
                         </div>
                     </div>
-
-                    <div class="bulk" id="bulkBar"><div id="bulkCount">0 selected</div><div style="margin-left:auto;display:flex;gap:8px"><button onclick="bulkUpdate()">Update Status</button><button onclick="bulkAllocate()">Allocate</button><button onclick="bulkMove()">Move</button><button onclick="bulkExport()">Export</button></div></div>
-
                     <div class="panel table-wrap">
                         <table id="itemsTable">
                             <thead>
 									<tr>
 										<th style="width:36px"><input id="selectAll" type="checkbox"/></th>
 										<th>Group</th>
+										<th style="width:150px">Image</th>
 										<th>Item Number</th>
 										<th>Item Description</th>
+										<th>Destination</th>
 										<th>Item Status</th>
 										<th>Actions</th>
 									</tr>
                             </thead>
 							<tbody id="tbody">
-								<tr><td colspan="6">Loading…</td></tr>
+									<tr><td colspan="8">Loading…</td></tr>
 							</tbody>
                         </table>
                     </div>
@@ -183,6 +531,16 @@
             </div>
         </main>
     </div>
+	<div id="imageViewer" class="image-viewer" onclick="if(event.target===this) closeImageViewer()" role="dialog" aria-modal="true" aria-label="Image preview">
+		<div class="image-viewer-card">
+			<div class="image-viewer-header">
+				<div id="imageViewerTitle" class="image-viewer-title">Item Image</div>
+				<button type="button" class="image-viewer-close" onclick="closeImageViewer()">Close</button>
+			</div>
+			<img id="imageViewerImg" alt="Item image preview" />
+		</div>
+	</div>
+		<input id="imagePicker" type="file" accept="image/*" style="display:none" />
 
     <script>
         const KEYS = ['pnoc_inventory_bentaco_v1','pnoc_inventory_iot_v1'];
@@ -193,31 +551,144 @@
 
 		function summarize(){
 			const total = all.length;
-			const stat = { Usable:0, 'Needs Repair':0, Retired:0, Missing:0 };
-			all.forEach(i=>{ const s = (i.itemStatus||i.status||'').toLowerCase(); if(s==='usable') stat.Usable++; else if(s.includes('repair')||s.includes('needs')) stat['Needs Repair']++; else if(s.includes('retire')||s.includes('defect')||s.includes('unusable')) stat.Retired++; else stat.Missing++; });
-			document.getElementById('totalAssets').textContent = total; document.getElementById('usableCount').textContent = stat.Usable; document.getElementById('repairCount').textContent = stat['Needs Repair']; document.getElementById('retiredCount') && (document.getElementById('retiredCount').textContent = stat.Retired); document.getElementById('missingCount').textContent = stat.Missing;
+			const stat = { Retain:0, Transfer:0, Dispose:0, 'Store/Warehouse':0 };
+			all.forEach(i=>{ const s = statusValue(i).toLowerCase(); if(s==='retain') stat.Retain++; else if(s==='transfer') stat.Transfer++; else if(s==='dispose') stat.Dispose++; else if(s==='store/warehouse') stat['Store/Warehouse']++; });
+			document.getElementById('totalAssets').textContent = total; document.getElementById('retainCount').textContent = stat.Retain; document.getElementById('transferCount').textContent = stat.Transfer; document.getElementById('disposeCount') && (document.getElementById('disposeCount').textContent = stat.Dispose); document.getElementById('warehouseCount').textContent = stat['Store/Warehouse'];
 		}
 
 		// Chart display removed — renderChart no longer used
 
+		function activeStatusFilter(){
+			const active = document.querySelector('.card[data-status].active');
+			return active ? String(active.getAttribute('data-status') || 'all') : 'all';
+		}
+
 		function apply(){
-			const q=document.getElementById('search').value.toLowerCase(); const g=document.getElementById('group').value; const s=document.getElementById('status').value;
-            view = all.filter(it=>{ if(g!=='all' && (it.source||'')!==g) return false; if(s!=='all' && ((it.itemStatus||it.status||'') !== s)) return false; if(q){ const text = ((it.itemDescription||'')+' '+(it.propertyNumber||it.itemId||'')+' '+(it.serialNumber||it.serial||'')+' '+(it.notes||'')).toLowerCase(); if(text.indexOf(q)===-1) return false; } return true; });
-			document.getElementById('tbody').innerHTML = view.length ? view.map((it,idx)=>`<tr><td><input class="sel" data-idx="${idx}" type="checkbox"/></td><td>${it.source||''}</td><td>${it.propertyNumber||it.itemId||''}</td><td>${(it.itemDescription||it.item_description||it.description||'')}</td><td><span class="status-badge ${statusClass(it)}">${escapeHtml(it.itemStatus||it.status||'Missing')}</span></td><td><select class="action-select" onchange="changeStatusFromSelect(${idx}, this.value)"><option value="">Set status</option><option value="Usable">Usable</option><option value="Retired">Retired</option><option value="Missing">Missing</option></select></td></tr><tr class="expand"><td colspan="6">${expandHtml(it)}</td></tr>`).join('') : '<tr><td colspan="6" style="padding:18px;text-align:center;color:var(--muted)">No items found.</td></tr>';
+			const q=document.getElementById('search').value.toLowerCase();
+			const statusFilter = activeStatusFilter();
+			view = all.filter(it=>{
+				if(statusFilter !== 'all' && statusValue(it).toLowerCase() !== statusFilter.toLowerCase()) return false;
+				if(q){ const text = ((it.itemDescription||'')+' '+(it.propertyNumber||it.itemId||'')+' '+(it.serialNumber||it.serial||'')+' '+(it.notes||'')+' '+(it.destination||'')+' '+statusValue(it)).toLowerCase(); if(text.indexOf(q)===-1) return false; }
+				return true;
+			});
+			document.getElementById('tbody').innerHTML = view.length ? view.map((it,idx)=>`<tr><td><input class="sel" data-idx="${idx}" type="checkbox"/></td><td>${it.source||''}</td><td style="min-width:150px">${imageCellHtml(it, idx)}</td><td>${it.propertyNumber||it.itemId||''}</td><td>${(it.itemDescription||it.item_description||it.description||'')}</td><td>${destinationSelectHtml(it, idx)}</td><td>${statusCellHtml(it)}</td><td>${actionSelectHtml(it, idx)}</td></tr><tr class="expand"><td colspan="8">${expandHtml(it)}</td></tr>`).join('') : '<tr><td colspan="8" style="padding:18px;text-align:center;color:var(--muted)">No items found.</td></tr>';
             attachSelectors(); document.getElementById('resultCount') && (document.getElementById('resultCount').textContent = view.length);
         }
 
-		function statusClass(it){ const s=(it.itemStatus||it.status||'').toLowerCase(); if(s==='usable') return 's-usable'; if(s.includes('repair')||s.includes('needs')) return 's-repair'; if(s.includes('retire')||s.includes('defect')||s.includes('unusable')) return 's-retired'; return 's-missing'; }
+		function statusValue(it){ return String(it.action || '').trim(); }
+		function statusCellHtml(it){ const s = statusValue(it); if(!s) return ''; return `<span class="status-badge ${statusClass(it)}">${escapeHtml(s)}</span>`; }
+		function statusClass(it){ const s=statusValue(it).toLowerCase(); if(s==='retain') return 's-retain'; if(s==='transfer') return 's-repair'; if(s==='dispose') return 's-retired'; return 's-missing'; }
         function escapeHtml(v){ return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-        function expandHtml(it){ return `<div style="display:grid;grid-template-columns:1fr 1fr 1fr 260px;gap:12px"><div><strong>Serial No</strong><div>${escapeHtml(it.serialNumber||it.serial_number||'-')}</div><strong style="margin-top:8px">Assigned</strong><div>${escapeHtml(it.assignedTo||it.user||'-')}</div></div><div><strong>Purchase Date</strong><div>${escapeHtml(it.purchaseDate||it.purchase_date||'-')}</div><strong style="margin-top:8px">Warranty</strong><div>${escapeHtml(it.warranty||'-')}</div></div><div><strong>Notes</strong><div style="color:var(--muted)">${escapeHtml((it.notes||'').substring(0,300))}</div></div><div><strong>Status History</strong><div style="color:var(--muted);margin-top:6px">${sampleHistory(it)}</div></div></div>` }
-        function sampleHistory(it){ return `Apr 10 – ${it.itemStatus||'Usable'}<br>Apr 15 – Under Repair<br>Apr 20 – Usable`; }
+		function imageCellHtml(it, idx){ const src = it.image || it.itemImage || ''; return src ? `<img src="${escapeHtml(src)}" alt="Item image" class="thumb" onclick="openImageViewer('${escapeHtml(src)}','${escapeHtml(it.itemDescription||it.item_description||it.description||'Item Image')}')" />` : '<div class="thumb-empty">No img</div>'; }
+		function destinationSelectHtml(it, idx){
+			const current = String(it.destination || '').toLowerCase();
+			const options = ['Bataan','Banaba','Main Office'].map(name=>`<option value="${name}" ${current===name.toLowerCase()?'selected':''}>${name}</option>`).join('');
+			return `<select onchange="changeDestination(${idx}, this.value)"><option value="">Select Destination</option>${options}</select>`;
+		}
+		function actionSelectHtml(it, idx){
+			const current = String(it.action || '').toLowerCase();
+			const imageOps = (it.image || it.itemImage || '') ? ['Replace Image','Remove Image'] : ['Attach Image'];
+			const options = ['Retain','Transfer','Dispose','Store/Warehouse'].concat(imageOps).map(name=>`<option value="${name}" ${current===name.toLowerCase()?'selected':''}>${name}</option>`).join('');
+			return `<select class="action-select" onchange="changeAction(${idx}, this.value)"><option value="">Select Action</option>${options}</select>`;
+		}
+		function expandHtml(it){ return `<div style="display:grid;grid-template-columns:1fr 1fr 1fr 260px;gap:12px"><div><strong>Serial No</strong><div>${escapeHtml(it.serialNumber||it.serial_number||'-')}</div><strong style="margin-top:8px">Assigned</strong><div>${escapeHtml(it.assignedTo||it.user||'-')}</div></div><div><strong>Purchase Date</strong><div>${escapeHtml(it.purchaseDate||it.purchase_date||'-')}</div><strong style="margin-top:8px">Warranty</strong><div>${escapeHtml(it.warranty||'-')}</div></div><div><strong>Notes</strong><div style="color:var(--muted)">${escapeHtml((it.notes||'').substring(0,300))}</div><strong style="margin-top:8px">Action</strong><div>${escapeHtml(it.action||'-')}</div></div><div><strong>Status History</strong><div style="color:var(--muted);margin-top:6px">${sampleHistory(it)}</div></div></div>` }
+		function sampleHistory(it){ return `Apr 10 – ${statusValue(it)||'Retain'}<br>Apr 15 – In Review<br>Apr 20 – ${statusValue(it)||'Retain'}`; }
 
         function attachSelectors(){ document.querySelectorAll('.sel').forEach(el=>el.onchange=onSel); document.getElementById('selectAll').onchange=function(){ document.querySelectorAll('.sel').forEach(s=>s.checked=this.checked); onSel(); } }
-        function onSel(){ const n = document.querySelectorAll('.sel:checked').length; const bar=document.getElementById('bulkBar'); if(n) { bar.style.display='flex'; document.getElementById('bulkCount').textContent = n+' selected'; } else bar.style.display='none'; }
+		function onSel(){
+			const n = document.querySelectorAll('.sel:checked').length;
+			const bar = document.getElementById('bulkBar');
+			const count = document.getElementById('bulkCount');
+			if(!bar || !count) return;
+			if(n) { bar.style.display='flex'; count.textContent = n+' selected'; }
+			else bar.style.display='none';
+		}
 
-		function viewItem(idx){ const it=view[idx]; alert(`${it.source} ${it.propertyNumber||it.itemId}\n${it.itemDescription||''}\nStatus: ${it.itemStatus||it.status||'Missing'}`); }
-		function changeStatus(idx){ const it=view[idx]; const v=prompt('Set status (Usable, Needs Repair, Retired, Missing)', it.itemStatus||it.status||'Usable'); if(v===null) return; it.itemStatus=v; persist(it); render(); }
+		function viewItem(idx){ const it=view[idx]; alert(`${it.source} ${it.propertyNumber||it.itemId}\n${it.itemDescription||''}\nStatus: ${statusValue(it)||'-'}`); }
+		function changeStatus(idx){ const it=view[idx]; const v=prompt('Set status (Retain, Transfer, Dispose, Store/Warehouse)', statusValue(it)||'Retain'); if(v===null) return; it.itemStatus=v; it.action=v; persist(it); render(); }
 		function changeStatusFromSelect(idx, value){ if(!value) return; const it = view[idx]; if(!it) return; it.itemStatus = value; persist(it); render(); }
+		function changeDestination(idx, value){ const it = view[idx]; if(!it) return; it.destination = value || ''; persist(it); }
+		function changeAction(idx, value){
+			const it = view[idx];
+			if(!it) return;
+			const normalized = String(value || '').trim();
+			if(!normalized) return;
+			if(normalized === 'Attach Image' || normalized === 'Replace Image'){
+				attachImage(idx);
+				return;
+			}
+			if(normalized === 'Remove Image'){
+				removeImage(idx);
+				return;
+			}
+			it.action = normalized;
+			it.itemStatus = normalized;
+			persist(it);
+			render();
+		}
+
+		function attachImage(idx){
+			const it = view[idx];
+			if(!it) return;
+			const picker = document.getElementById('imagePicker');
+			if(!picker) return;
+			picker.value = '';
+			picker.onchange = function(){
+				const file = picker.files && picker.files[0];
+				if(!file) return;
+				if(!file.type || file.type.indexOf('image/') !== 0){
+					alert('Please select a valid image file.');
+					return;
+				}
+				if(file.size > 2 * 1024 * 1024){
+					alert('Image is too large. Max allowed size is 2MB.');
+					return;
+				}
+				const reader = new FileReader();
+				reader.onload = function(e){
+					it.image = String((e.target && e.target.result) || '');
+					persist(it);
+					render();
+				};
+				reader.readAsDataURL(file);
+			};
+			picker.click();
+		}
+
+		function removeImage(idx){
+			const it = view[idx];
+			if(!it) return;
+			it.image = '';
+			it.itemImage = '';
+			persist(it);
+			render();
+		}
+
+		function openImageViewer(src, title){
+			const viewer = document.getElementById('imageViewer');
+			const image = document.getElementById('imageViewerImg');
+			const heading = document.getElementById('imageViewerTitle');
+			if(!viewer || !image || !heading || !src) return;
+			image.src = src;
+			heading.textContent = title || 'Item Image';
+			viewer.classList.add('open');
+		}
+
+		function closeImageViewer(){
+			const viewer = document.getElementById('imageViewer');
+			const image = document.getElementById('imageViewerImg');
+			if(viewer) viewer.classList.remove('open');
+			if(image) image.src = '';
+		}
+
+		function toggleDispositionGuide(){
+			const card = document.querySelector('.disposition-card');
+			const toggle = document.getElementById('dispositionToggle');
+			if(!card || !toggle) return;
+			const collapsed = card.classList.toggle('collapsed');
+			toggle.textContent = collapsed ? 'Show' : 'Hide';
+			toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+		}
 
 		function setStatusTab(status){
 			const s = (status||'').toString();
@@ -250,12 +721,169 @@
         function bulkMove(){ alert('Bulk move (placeholder)'); }
         function bulkExport(){ alert('Bulk export (placeholder)'); }
 
-		function exportCSV(){ const rows = view.length? view: all; const cols = ['Group','Item Number','Item Description','Item Status']; const csv = [cols.join(',')].concat(rows.map(r=>[r.source,(r.propertyNumber||r.itemId||''),(r.itemDescription||r.description||''),(r.itemStatus||r.status||'')].map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(','))).join('\n'); const b=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(b); const a=document.createElement('a'); a.href=url; a.download='items-export.csv'; a.click(); URL.revokeObjectURL(url); }
+		function loadImageAsDataURL(src, callback){
+			const img = new Image();
+			img.crossOrigin = 'anonymous';
+			img.onload = function(){
+				try {
+					const canvas = document.createElement('canvas');
+					canvas.width = img.naturalWidth || img.width;
+					canvas.height = img.naturalHeight || img.height;
+					const ctx = canvas.getContext('2d');
+					if(!ctx){ callback(null); return; }
+					ctx.drawImage(img, 0, 0);
+					callback(canvas.toDataURL('image/png'));
+				} catch(err){
+					callback(null);
+				}
+			};
+			img.onerror = function(){ callback(null); };
+			img.src = src;
+		}
 
-		document.getElementById('search').addEventListener('input',apply); document.getElementById('group').addEventListener('change',apply); document.getElementById('status').addEventListener('change',()=>{ setStatusTab(document.getElementById('status').value); apply(); }); document.getElementById('clear').addEventListener('click',()=>{document.getElementById('search').value='';document.getElementById('group').value='all';document.getElementById('status').value='all'; setStatusTab('all'); apply();});
-        document.getElementById('exportCsv').addEventListener('click',exportCSV); document.getElementById('exportXls').addEventListener('click',()=>alert('Export Excel - placeholder')); document.getElementById('print').addEventListener('click',()=>window.print());
+		function reportFilterSummary(){
+			const search = document.getElementById('search') ? document.getElementById('search').value.trim() : '';
+			const group = document.getElementById('group') ? document.getElementById('group').value : 'all';
+			const status = document.getElementById('status') ? document.getElementById('status').value : 'all';
+			const parts = [];
+			if(search) parts.push(`Search: ${search}`);
+			if(group && group !== 'all') parts.push(`Group: ${group}`);
+			if(status && status !== 'all') parts.push(`Status: ${status}`);
+			return parts.length ? parts.join(' | ') : 'All records';
+		}
 
-		function render(){ load(); summarize(); apply(); setStatusTab(document.getElementById('status')?document.getElementById('status').value:'all'); }
+		function reportStatusStyle(statusText){
+			const status = String(statusText || '').toLowerCase();
+			if(status === 'retain') return { fillColor:[16,185,129], textColor:255 };
+			if(status === 'transfer') return { fillColor:[245,158,11], textColor:17 };
+			if(status === 'dispose') return { fillColor:[239,68,68], textColor:255 };
+			if(status === 'store/warehouse') return { fillColor:[100,116,139], textColor:255 };
+			return { fillColor:[226,232,240], textColor:15 };
+		}
+
+		function exportPDF(){
+			if(!window.jspdf || !window.jspdf.jsPDF){
+				alert('PDF library failed to load. Please refresh the page and try again.');
+				return;
+			}
+			const rows = (view && view.length) ? view : all;
+			if(!rows.length){
+				alert('No table data available to export.');
+				return;
+			}
+
+			loadImageAsDataURL('qw.png', function(logoData){
+				const { jsPDF } = window.jspdf;
+				const doc = new jsPDF({ orientation:'landscape', unit:'mm', format:'a4' });
+				const generatedAt = new Date();
+				const timestamp = generatedAt.toLocaleString();
+				const period = `${generatedAt.getFullYear()}-${String(generatedAt.getMonth()+1).padStart(2,'0')}-${String(generatedAt.getDate()).padStart(2,'0')}`;
+				const filterSummary = reportFilterSummary();
+				const pageWidth = doc.internal.pageSize.getWidth();
+
+				doc.setFillColor(248, 251, 255);
+				doc.rect(10, 8, pageWidth - 20, 26, 'F');
+				doc.setDrawColor(207, 219, 232);
+				doc.line(10, 34, pageWidth - 10, 34);
+
+				if(logoData){
+					try {
+						doc.addImage(logoData, 'PNG', 14, 11, 18, 18);
+					} catch(err){
+						// Keep PDF export working even if logo cannot be rendered.
+					}
+				}
+
+				doc.setFont('helvetica','bold');
+				doc.setFontSize(14);
+				doc.text('PHILIPPINE NATIONAL OIL COMPANY (PNOC)', 36, 17);
+				doc.setFont('helvetica','italic');
+				doc.setFontSize(11);
+				doc.text('Item Status Monitoring Report', 36, 24);
+				doc.setFont('helvetica','normal');
+				doc.setFontSize(9);
+				doc.text(`Generated: ${timestamp}`, 14, 40);
+				doc.text(`Total Records: ${rows.length}`, 95, 40);
+				doc.text(`Scope: ${(view && view.length) ? 'Filtered View' : 'Full Inventory View'}`, 145, 40);
+				doc.text(`Filters: ${filterSummary}`, 14, 44);
+
+				const tableRows = rows.map((r, i)=>([
+					String(i + 1),
+					String(r.source || ''),
+					String(r.image || r.itemImage || ''),
+					String(r.propertyNumber || r.itemId || ''),
+					String(r.itemDescription || r.item_description || r.description || ''),
+					String(r.destination || '-'),
+					String(statusValue(r) || '-')
+				]));
+
+				doc.autoTable({
+					startY: 48,
+					margin: { left: 10, right: 10 },
+					tableWidth: 'auto',
+					head: [['#','Group','Image','Item Number','Item Description','Destination','Item Status']],
+					body: tableRows,
+					theme: 'grid',
+					headStyles: { fillColor:[15,23,42], textColor:255, fontStyle:'bold', halign:'center' },
+					styles: { font:'helvetica', fontSize:8.5, cellPadding:2, textColor:[15,23,42] },
+					columnStyles: {
+						0: { halign:'center', cellWidth:8 },
+						1: { halign:'center', cellWidth:20 },
+						2: { halign:'center', cellWidth:24 },
+						3: { halign:'center', cellWidth:32 },
+						4: { cellWidth:120 },
+						5: { halign:'center', cellWidth:30 },
+						6: { halign:'center', cellWidth:34 }
+					},
+					didParseCell: function(data){
+						if(data.section === 'body' && data.column.index === 2){
+							data.cell.styles.minCellHeight = 14;
+							data.cell.text = [''];
+						}
+						if(data.section === 'body' && data.column.index === 6){
+							const cellStyle = reportStatusStyle(data.cell.raw);
+							data.cell.styles.fillColor = cellStyle.fillColor;
+							data.cell.styles.textColor = cellStyle.textColor;
+							data.cell.styles.fontStyle = 'bold';
+							data.cell.styles.halign = 'center';
+						}
+					},
+					didDrawCell: function(data){
+						if(data.section !== 'body' || data.column.index !== 2){
+							return;
+						}
+						const raw = tableRows[data.row.index] && tableRows[data.row.index][2] ? String(tableRows[data.row.index][2]) : '';
+						if(!raw || raw.indexOf('data:image/') !== 0){
+							return;
+						}
+						let format = 'PNG';
+						if(raw.indexOf('data:image/jpeg') === 0 || raw.indexOf('data:image/jpg') === 0) format = 'JPEG';
+						const padding = 1;
+						const size = Math.max(8, Math.min(data.cell.width, data.cell.height) - (padding * 2));
+						const x = data.cell.x + ((data.cell.width - size) / 2);
+						const y = data.cell.y + ((data.cell.height - size) / 2);
+						try {
+							doc.addImage(raw, format, x, y, size, size);
+						} catch (err) {
+							// Skip unsupported image data in PDF render.
+						}
+					},
+					didDrawPage: function(data){
+						doc.setFontSize(8);
+						doc.setTextColor(100);
+						doc.text(`Page ${doc.internal.getNumberOfPages()}`, data.settings.margin.left, doc.internal.pageSize.getHeight() - 6);
+						doc.text('Confidential - PNOC Internal Use', doc.internal.pageSize.getWidth() - 72, doc.internal.pageSize.getHeight() - 6);
+					}
+				});
+
+				doc.save(`pnoc-item-status-report-${period}.pdf`);
+			});
+		}
+
+		document.getElementById('search').addEventListener('input',apply);
+		document.getElementById('exportPdf').addEventListener('click',exportPDF); document.getElementById('print').addEventListener('click',()=>window.print());
+
+		function render(){ load(); summarize(); setStatusTab('all'); apply(); }
 		attachStatusTabs();
 		render();
     </script>
@@ -509,10 +1137,10 @@
 			background: rgba(99,102,241,0.06);
 			color: var(--primary);
 		}
-		.badge.status-usable { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.15); color: var(--emerald); }
+		.badge.status-retain { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.15); color: var(--emerald); }
 		.badge.status-maintenance { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.15); color: var(--amber); }
 		.badge.status-retired { background: #f1f3f5; border-color: #e6e9ec; color: #5f6872; }
-		.badge.status-usable { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.3); color: var(--emerald); }
+		.badge.status-retain { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.3); color: var(--emerald); }
 		.badge.status-maintenance { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); color: var(--amber); }
 			/* status-damaged removed — damaged rows are remapped to Retired */
 		.badge.status-retired { background: #f1f3f5; border-color: #d7dce1; color: #5f6872; }
@@ -648,86 +1276,6 @@
 		</aside>
 
 		<main class="main-content">
-			<div class="page-header">
-				<h1 class="page-title">Item Status Monitoring</h1>
-				<p class="page-subtitle" id="metaInfo">0 rows</p>
-			</div>
-
-			<div class="stats-row" aria-label="Status overview cards">
-				<div class="stat-card">
-					<div class="stat-label">Active</div>
-					<div class="stat-value" id="statActiveAssets">0</div>
-					<div class="stat-note">Monitored</div>
-				</div>
-				<div class="stat-card">
-					<div class="stat-label">Top</div>
-					<div class="stat-value" id="statWinningStatus">-</div>
-					<div class="stat-note">Most common</div>
-				</div>
-				<div class="stat-card">
-					<div class="stat-label">Usability</div>
-					<div class="usability-wrap">
-						<div class="usability-gauge" id="usabilityGauge"></div>
-						<div class="usability-info">
-							<div class="usability-percent" id="usabilityPercent">0%</div>
-							<div class="usability-level" id="usabilityLevel">No data</div>
-						</div>
-					</div>
-				</div>
-				<div class="stat-card">
-					<div class="stat-label">Allocated</div>
-					<div class="stat-value" id="statAllocatedItems">0</div>
-					<div class="stat-note">Assigned</div>
-				</div>
-			</div>
-
-			<div class="section-card">
-				<div class="toolbar">
-					<input id="searchInput" type="text" placeholder="Search item, status, notes" />
-					<select id="groupFilter">
-						<option value="all">Group: All</option>
-						<option value="BENTACO">BENTACO</option>
-						<option value="IOT">IOT</option>
-					</select>
-					<select id="statusFilter">
-						<option value="all">Status: All</option>
-						<option value="Usable">Usable</option>
-						<option value="Under Maintenance">Under Maintenance</option>
-						<option value="Retired">Retired</option>
-					</select>
-					<select id="allocationFilter">
-						<option value="all">Allocation: All</option>
-						<option value="Allocated">Allocated</option>
-						<option value="Overdue">Overdue Return</option>
-						<option value="Available">Unallocated</option>
-					</select>
-					<button id="clearFilters" type="button">Clear</button>
-				</div>
-
-				<div class="table-wrap">
-					<table aria-label="Status monitoring table">
-						<thead>
-							<tr>
-								<th class="sortable" data-sort="group">Group</th>
-								<th class="sortable" data-sort="itemId">Item No</th>
-								<th class="sortable" data-sort="itemDescription">Item Description</th>
-								<th class="sortable" data-sort="itemStatus">Item Status</th>
-							</tr>
-						</thead>
-						<tbody id="tableBody">
-							<tr><td colspan="4">No records.</td></tr>
-						</tbody>
-					</table>
-				</div>
-
-				<div class="pagination">
-					<div class="meta" id="pageInfo">Page 1 of 1</div>
-					<div class="page-controls">
-						<button id="prevPage" type="button">Previous</button>
-						<button id="nextPage" type="button">Next</button>
-					</div>
-				</div>
-			</div>
 		</main>
 	</div>
 
@@ -737,354 +1285,8 @@
 			IOT: "pnoc_inventory_iot_v1"
 		};
 
-		const state = {
-			rows: [],
-			search: "",
-			sortKey: "itemId",
-			sortDir: "asc",
-			page: 1,
-			pageSize: 15
-		};
-
-		const refs = {
-			searchInput: document.getElementById("searchInput"),
-			groupFilter: document.getElementById("groupFilter"),
-			statusFilter: document.getElementById("statusFilter"),
-			allocationFilter: document.getElementById("allocationFilter"),
-			clearFilters: document.getElementById("clearFilters"),
-			tableBody: document.getElementById("tableBody"),
-			metaInfo: document.getElementById("metaInfo"),
-			pageInfo: document.getElementById("pageInfo"),
-			prevPage: document.getElementById("prevPage"),
-			nextPage: document.getElementById("nextPage"),
-			statActiveAssets: document.getElementById("statActiveAssets"),
-			statWinningStatus: document.getElementById("statWinningStatus"),
-			statAllocatedItems: document.getElementById("statAllocatedItems"),
-			usabilityGauge: document.getElementById("usabilityGauge"),
-			usabilityPercent: document.getElementById("usabilityPercent"),
-			usabilityLevel: document.getElementById("usabilityLevel")
-		};
-
-		const escapeHtml = (value) =>
-			String(value ?? "")
-				.replace(/&/g, "&amp;")
-				.replace(/</g, "&lt;")
-				.replace(/>/g, "&gt;")
-				.replace(/\"/g, "&quot;")
-				.replace(/'/g, "&#39;");
-
-		function todayISO() {
-			const date = new Date();
-			const year = date.getFullYear();
-			const month = String(date.getMonth() + 1).padStart(2, "0");
-			const day = String(date.getDate()).padStart(2, "0");
-			return `${year}-${month}-${day}`;
-		}
-
-		function normalizeStatus(value) {
-			const text = String(value || "").trim().toLowerCase();
-			if (text === "usable") return "Usable";
-			if (text === "under maintenance" || text === "maintenance") return "Under Maintenance";
-			if (text === "retired") return "Retired";
-			// Treat damaged/defective/unusable entries as Retired to remap legacy data
-			if (text === "damaged" || text === "not usable" || text === "unusable" || text === "defective") return "Retired";
-			return "Usable";
-		}
-
-		function statusBadgeClass(status) {
-			const normalized = normalizeStatus(status).toLowerCase();
-			if (normalized === "usable") return "status-usable";
-			if (normalized === "under maintenance") return "status-maintenance";
-			if (normalized === "retired") return "status-retired";
-			return "status-retired";
-		}
-
-		function normalizeRowFields(row) {
-			return {
-				...row,
-				itemStatus: normalizeStatus(row.itemStatus),
-				allocationDate: String(row.allocationDate || "").trim(),
-				returnDate: String(row.returnDate || "").trim(),
-				allocationNotes: String(row.allocationNotes || "").trim(),
-				historyLog: Array.isArray(row.historyLog) ? row.historyLog : []
-			};
-		}
-
-		function saveGroupRows(group, rows) {
-			localStorage.setItem(STORAGE_KEYS[group], JSON.stringify(rows));
-		}
-
-		function loadRows() {
-			const merged = [];
-			Object.entries(STORAGE_KEYS).forEach(([group, key]) => {
-				try {
-					const raw = localStorage.getItem(key);
-					const parsed = raw ? JSON.parse(raw) : [];
-					const list = Array.isArray(parsed) ? parsed.map((row) => normalizeRowFields(row)) : [];
-					saveGroupRows(group, list);
-					list.forEach((row) => merged.push({ ...row, group }));
-				} catch {
-				}
-			});
-			state.rows = merged;
-		}
-
-		function isOverdue(row) {
-			if (!row.returnDate || !row.allocatedTo) return false;
-			return row.returnDate < todayISO();
-		}
-
-		function allocationState(row) {
-			if (isOverdue(row)) return "Overdue";
-			return row.allocatedTo ? "Allocated" : "Available";
-		}
-
-		function allocationBadgeClass(stateLabel) {
-			if (stateLabel === "Overdue") return "overdue";
-			if (stateLabel === "Allocated") return "status-usable";
-			return "status-retired";
-		}
-
-		function normalizedValue(row, key) {
-			if (key === "allocationStatus") return allocationState(row).toLowerCase();
-			if (key === "itemStatus") return normalizeStatus(row.itemStatus).toLowerCase();
-			return String(row[key] || "").toLowerCase();
-		}
-
-		function getFilteredRows() {
-			const query = state.search.trim().toLowerCase();
-			const groupFilter = refs.groupFilter.value;
-			const statusFilter = refs.statusFilter.value;
-			const allocationFilter = refs.allocationFilter.value;
-
-				return state.rows.filter((row) => {
-				if (groupFilter !== "all" && row.group !== groupFilter) return false;
-				if (statusFilter !== "all" && normalizeStatus(row.itemStatus) !== statusFilter) return false;
-				if (allocationFilter !== "all" && allocationState(row) !== allocationFilter) return false;
-				if (!query) return true;
-				return [
-					row.group,
-					row.itemId,
-					row.itemDescription,
-					row.itemStatus,
-					row.allocatedTo,
-					row.allocationDate,
-					row.returnDate,
-					row.allocationNotes,
-					allocationState(row)
-				].some((value) => String(value || "").toLowerCase().includes(query));
-			});
-		}
-
-		function getSortedRows(rows) {
-			return [...rows].sort((a, b) => {
-				const left = normalizedValue(a, state.sortKey);
-				const right = normalizedValue(b, state.sortKey);
-				if (left < right) return state.sortDir === "asc" ? -1 : 1;
-				if (left > right) return state.sortDir === "asc" ? 1 : -1;
-				return 0;
-			});
-		}
-
-		function getPagedRows(rows) {
-			const totalPages = Math.max(1, Math.ceil(rows.length / state.pageSize));
-			if (state.page > totalPages) state.page = totalPages;
-			const start = (state.page - 1) * state.pageSize;
-			return { rows: rows.slice(start, start + state.pageSize), totalPages };
-		}
-
-		function getGroupList(group) {
-			try {
-				const raw = localStorage.getItem(STORAGE_KEYS[group]);
-				const parsed = raw ? JSON.parse(raw) : [];
-				return Array.isArray(parsed) ? parsed.map((row) => normalizeRowFields(row)) : [];
-			} catch {
-				return [];
-			}
-		}
-
-		function persistOne(row) {
-			const list = getGroupList(row.group);
-			const index = list.findIndex((item) => item.itemId === row.itemId);
-			if (index >= 0) {
-				list[index] = {
-					...list[index],
-					itemStatus: row.itemStatus,
-					allocationDate: row.allocationDate,
-					returnDate: row.returnDate,
-					allocatedTo: row.allocatedTo,
-					allocationTo: row.allocatedTo,
-					allocationNotes: row.allocationNotes,
-					historyLog: Array.isArray(row.historyLog) ? row.historyLog : list[index].historyLog
-				};
-				saveGroupRows(row.group, list);
-			}
-		}
-
-		function appendHistory(row, type, title, details) {
-			if (!Array.isArray(row.historyLog)) row.historyLog = [];
-			row.historyLog.unshift({ type, title, details, at: new Date().toLocaleString() });
-		}
-
-		function runAction(action, itemId, group) {
-			const row = state.rows.find((entry) => entry.itemId === itemId && entry.group === group);
-			if (!row) return;
-
-			if (action === "view") {
-				const historyLines = (row.historyLog || []).slice(0, 8).map((entry) => `${entry.at} - ${entry.title}`).join("\n");
-				alert(`${row.group} ${row.itemId}\n${row.itemDescription || ""}\nStatus: ${row.itemStatus}\nAllocated To: ${row.allocatedTo || ""}\nAllocation State: ${allocationState(row)}\n\nHistory:\n${historyLines || "No history."}`);
-				return;
-			}
-
-			if (action === "status") {
-				const input = prompt("Set Status (Usable, Under Maintenance, Retired)", row.itemStatus || "Usable");
-				if (input === null) return;
-				const normalized = normalizeStatus(input);
-				row.itemStatus = normalized;
-				appendHistory(row, "status", "Status changed", `Status set to ${normalized}.`);
-				persistOne(row);
-				render();
-				return;
-			}
-
-			if (action === "maintenance") {
-				const note = prompt("Maintenance Log", "");
-				if (note === null) return;
-				if (!note.trim()) return;
-				row.itemStatus = "Under Maintenance";
-				appendHistory(row, "maintenance", "Maintenance log added", note.trim());
-				persistOne(row);
-				render();
-			}
-		}
-
-		function render() {
-			loadRows();
-			const filtered = getFilteredRows();
-			const sorted = getSortedRows(filtered);
-			const pager = getPagedRows(sorted);
-			const rows = pager.rows;
-
-			const statusCounts = filtered.reduce((acc, row) => {
-				const status = normalizeStatus(row.itemStatus);
-				acc[status] = (acc[status] || 0) + 1;
-				return acc;
-			}, {});
-			const winningStatus = Object.entries(statusCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "No data";
-			const allocatedCount = filtered.filter((row) => allocationState(row) !== "Available").length;
-			const usableCount = filtered.filter((row) => normalizeStatus(row.itemStatus) === "Usable").length;
-			const usabilityPct = filtered.length ? Math.round((usableCount / filtered.length) * 100) : 0;
-			const usabilityLabel = usabilityPct >= 85
-				? "Excellent"
-				: usabilityPct >= 70
-					? "Good"
-					: usabilityPct >= 50
-						? "Fair"
-						: "Needs attention";
-
-			refs.metaInfo.textContent = `${filtered.length} rows`;
-			refs.pageInfo.textContent = `Page ${state.page} of ${pager.totalPages}`;
-			if (refs.statActiveAssets) refs.statActiveAssets.textContent = String(filtered.length);
-			if (refs.statWinningStatus) refs.statWinningStatus.textContent = winningStatus;
-			if (refs.statAllocatedItems) refs.statAllocatedItems.textContent = String(allocatedCount);
-			if (refs.usabilityPercent) refs.usabilityPercent.textContent = `${usabilityPct}%`;
-			if (refs.usabilityLevel) refs.usabilityLevel.textContent = usabilityLabel;
-			if (refs.usabilityGauge) refs.usabilityGauge.style.setProperty("--gauge-value", `${usabilityPct}%`);
-			refs.prevPage.disabled = state.page <= 1;
-			refs.nextPage.disabled = state.page >= pager.totalPages;
-
-			if (!rows.length) {
-				refs.tableBody.innerHTML = "<tr><td colspan='4'>No records.</td></tr>";
-				return;
-			}
-
-			// Collect all unique statuses from all rows and always include 'Retired' (exclude 'Damaged' from options)
-			const mustHaveStatuses = ["Retired"];
-			const allStatuses = Array.from(new Set([
-				...rows.map(r => normalizeStatus(r.itemStatus)),
-				...mustHaveStatuses
-			])).filter(Boolean).filter(s => String(s) !== 'Damaged');
-			refs.tableBody.innerHTML = rows.map((row, idx) => {
-				const status = normalizeStatus(row.itemStatus);
-				// Status dropdown
-				let statusHTML = `<select class="status-select" onchange="updateStatus(${idx}, this.value)">
-					${allStatuses.map(opt => `<option value="${opt}"${opt === status ? ' selected' : ''}>${opt}</option>`).join('')}
-				</select>`;
-				return `
-				<tr>
-					<td>${escapeHtml(row.group)}</td>
-					<td>${escapeHtml(row.itemId || "")}</td>
-					<td>${escapeHtml(row.itemDescription || "")}</td>
-					<td>${statusHTML}</td>
-				</tr>
-				`;
-			}).join("");
-				// Update status handler for dropdown
-				function updateStatus(idx, value) {
-					// Find the correct row in the current page
-					const filtered = getFilteredRows();
-					const sorted = getSortedRows(filtered);
-					const pager = getPagedRows(sorted);
-					const rows = pager.rows;
-					const row = rows[idx];
-					if (!row) return;
-					row.itemStatus = value;
-					persistOne(row);
-					render();
-				}
-		}
-
-		function setSort(key) {
-			if (state.sortKey === key) {
-				state.sortDir = state.sortDir === "asc" ? "desc" : "asc";
-			} else {
-				state.sortKey = key;
-				state.sortDir = "asc";
-			}
-			state.page = 1;
-			render();
-		}
-
-		document.querySelectorAll("th.sortable").forEach((th) => {
-			th.addEventListener("click", () => setSort(th.dataset.sort));
-		});
-
-		refs.searchInput.addEventListener("input", () => {
-			state.search = refs.searchInput.value;
-			state.page = 1;
-			render();
-		});
-
-		[refs.groupFilter, refs.statusFilter, refs.allocationFilter].forEach((el) => {
-			el.addEventListener("change", () => {
-				state.page = 1;
-				render();
-			});
-		});
-
-		refs.clearFilters.addEventListener("click", () => {
-			refs.searchInput.value = "";
-			state.search = "";
-			refs.groupFilter.value = "all";
-			refs.statusFilter.value = "all";
-			refs.allocationFilter.value = "all";
-			state.page = 1;
-			render();
-		});
-
-		refs.prevPage.addEventListener("click", () => {
-			if (state.page > 1) {
-				state.page -= 1;
-				render();
-			}
-		});
-
-		refs.nextPage.addEventListener("click", () => {
-			state.page += 1;
-			render();
-		});
-
-		render();
+		// Minimal initialization - table and filters removed
+		console.log("Item Status Monitoring page loaded");
 	</script>
 </body>
 </html>

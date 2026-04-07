@@ -158,7 +158,7 @@
         .main-content {
             flex: 1;
             margin-left: var(--sidebar-width);
-            padding: 1.5rem 2rem;
+            padding: 2rem 2.5rem;
         }
 
         .page-header {
@@ -256,8 +256,8 @@
         /* Content Layout */
         .content-grid {
             display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 1.5rem;
+            grid-template-columns: minmax(0, 1fr) minmax(320px, 360px);
+            gap: 2rem;
             align-items: start;
         }
 
@@ -266,7 +266,7 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: 1.25rem;
+            padding: 1.5rem;
             box-shadow: var(--shadow-md);
         }
 
@@ -274,7 +274,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .locator-header-left h2 {
@@ -297,7 +297,7 @@
         .filter-pills {
             display: flex;
             gap: 0.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .filter-pill {
@@ -327,7 +327,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .card-title {
@@ -347,18 +347,18 @@
             background: #f1f5f9;
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 1.25rem;
+            padding: 1.5rem;
             position: relative;
-            min-height: 480px;
+            min-height: 540px;
         }
 
         .map-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
             grid-template-rows: repeat(10, 1fr);
-            gap: 6px;
+            gap: 10px;
             height: 100%;
-            min-height: 440px;
+            min-height: 500px;
         }
 
         .map-zone {
@@ -516,9 +516,9 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: 1.25rem;
+            padding: 1.5rem;
             position: sticky;
-            top: 1.5rem;
+            top: 2rem;
             box-shadow: var(--shadow-md);
         }
 
@@ -699,8 +699,8 @@
         /* Content Layout */
         .content-grid {
             display: grid;
-            grid-template-columns: 1fr 280px;
-            gap: 1.5rem;
+            grid-template-columns: minmax(0, 1fr) minmax(320px, 360px);
+            gap: 2rem;
             align-items: start;
         }
 
@@ -709,13 +709,13 @@
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
-            padding: 1.25rem;
-            margin-top: 1.5rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
             box-shadow: var(--shadow-md);
         }
 
         .items-header {
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .items-header h2 {
@@ -781,15 +781,15 @@
         .items-status {
             font-size: 0.8rem;
             color: var(--text-muted);
-            padding: 0.5rem 0;
+            padding: 0.65rem 0;
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
         .items-toolbar {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
         }
 
         .items-search {
@@ -1046,8 +1046,13 @@
 
         /* Responsive */
         @media (max-width: 1024px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+
             .content-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
             
             .selected-panel {
@@ -1072,7 +1077,7 @@
             
             .main-content {
                 margin-left: 0;
-                padding: 1rem;
+                padding: 1rem 0.875rem;
             }
             
             .map-grid {

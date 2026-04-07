@@ -121,7 +121,7 @@
 		.main-content {
 			flex: 1;
 			margin-left: var(--sidebar-width);
-			padding: 2rem 2.5rem;
+			padding: 2rem 2.75rem;
 		}
 		.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
 		.page-title { font-size: 1.65rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.35rem; letter-spacing: -0.02em; }
@@ -144,8 +144,8 @@
 		.content-card {
 			background: var(--card-bg);
 			border-radius: var(--radius-lg);
-			padding: 1.5rem;
-			margin-bottom: 1.5rem;
+			padding: 1.6rem;
+			margin-bottom: 1.9rem;
 			box-shadow: var(--shadow-md);
 		}
 		.card-header {
@@ -159,12 +159,12 @@
 		.stats-grid {
 			display: grid;
 			grid-template-columns: repeat(3, minmax(0, 1fr));
-			gap: 1rem;
+			gap: 1.2rem;
 		}
 		.stat-card {
 			background: var(--card-bg);
 			border-radius: var(--radius-md);
-			padding: 1.25rem;
+			padding: 1.45rem;
 			box-shadow: var(--shadow-sm);
 			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 			cursor: default;
@@ -211,16 +211,16 @@
 			background: var(--card-bg);
 			border-radius: var(--radius-lg);
 			overflow: hidden;
-			margin-bottom: 1.5rem;
+			margin-bottom: 1.9rem;
 			box-shadow: var(--shadow-md);
 		}
 		.hero-grid {
 			display: grid;
 			grid-template-columns: 1fr 1.1fr;
 			align-items: center;
-			gap: 0.9rem;
+			gap: 1.25rem;
 		}
-		.hero-copy { padding: 1.5rem; }
+		.hero-copy { padding: 1.9rem; }
 		.hero-copy h2 {
 			font-family: 'Playfair Display', Georgia, serif;
 			font-size: clamp(1.4rem, 3.2vw, 2.2rem);
@@ -250,8 +250,8 @@
 		.section-card {
 			background: var(--card-bg);
 			border-radius: var(--radius-lg);
-			padding: 1.25rem;
-			margin-bottom: 1.5rem;
+			padding: 1.6rem;
+			margin-bottom: 1.9rem;
 			box-shadow: var(--shadow-md);
 		}
 		.section-head {
@@ -259,19 +259,19 @@
 			justify-content: space-between;
 			align-items: center;
 			gap: 0.5rem;
-			margin-bottom: 1rem;
+			margin-bottom: 1.25rem;
 		}
 		.section-head h2 { font-size: 1rem; font-weight: 600; }
 		.section-head span { font-size: 0.8rem; color: var(--text-muted); }
 		.kpi-grid {
 			display: grid;
 			grid-template-columns: repeat(3, minmax(0, 1fr));
-			gap: 1rem;
+			gap: 1.2rem;
 		}
 		.kpi {
 			background: var(--card-bg);
 			border-radius: var(--radius-md);
-			padding: 1rem 1.25rem;
+			padding: 1.2rem 1.4rem;
 			box-shadow: var(--shadow-sm);
 			animation: kpiRise 0.35s ease-out;
 			transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -308,15 +308,15 @@
 		.meta { color: var(--text-muted); font-size: 0.84rem; }
 		.toolbar {
 			display: grid;
-			grid-template-columns: 1fr 220px 170px auto;
-			gap: 0.75rem;
-			margin-bottom: 1rem;
+			grid-template-columns: 1fr 250px auto;
+			gap: 1rem;
+			margin-bottom: 1.25rem;
 		}
 		.upload-bar {
 			display: grid;
 			grid-template-columns: 1.3fr auto auto;
-			gap: 0.75rem;
-			margin-bottom: 1rem;
+			gap: 1rem;
+			margin-bottom: 1.25rem;
 		}
 		.toolbar input,
 		.upload-bar input,
@@ -356,6 +356,7 @@
 			overflow: auto; 
 			border-radius: var(--radius-md); 
 			box-shadow: var(--shadow-sm);
+			margin-top: 0.4rem;
 		}
 		table {
 			width: 100%;
@@ -366,7 +367,7 @@
 		th,
 		td {
 			border: 1px solid var(--border-color);
-			padding: 0.5rem 0.6rem;
+			padding: 0.65rem 0.8rem;
 			font-size: 0.83rem;
 			text-align: left;
 			vertical-align: middle;
@@ -408,10 +409,11 @@
 			justify-content: space-between;
 			align-items: center;
 			gap: 0.6rem;
-			margin-top: 0.6rem;
+			margin-top: 1rem;
 		}
 		.page-controls { display: flex; gap: 0.4rem; }
 		@media (max-width: 1200px) {
+			.main-content { padding: 1.5rem 1.4rem; }
 			.stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 			.hero-grid { grid-template-columns: 1fr; }
 			.kpi-grid { grid-template-columns: 1fr; }
@@ -426,7 +428,7 @@
 		}
 		@media (max-width: 768px) {
 			.sidebar { transform: translateX(-100%); }
-			.main-content { margin-left: 0; padding: 1rem; }
+			.main-content { margin-left: 0; padding: 1rem 0.875rem; }
 			.stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 		}
 		/* Unified sidebar override: always-expanded sidebar (no hover collapse) */
@@ -544,11 +546,6 @@
 					<select id="employeeFilter" aria-label="Filter by employee">
 						<option value="">All employees</option>
 					</select>
-					<select id="rowsPerPage">
-						<option value="20">20 rows</option>
-						<option value="25">25 rows</option>
-						<option value="50" selected>50 rows</option>
-					</select>
 					<button type="button" id="clearSearch">Clear</button>
 				</div>
 
@@ -613,7 +610,6 @@
 		const refs = {
 			searchInput: document.getElementById("searchInput"),
 			employeeFilter: document.getElementById("employeeFilter"),
-			rowsPerPage: document.getElementById("rowsPerPage"),
 			clearSearch: document.getElementById("clearSearch"),
 			pdfUploadInput: document.getElementById("pdfUploadInput"),
 			uploadPdfBtn: document.getElementById("uploadPdfBtn"),
@@ -1743,12 +1739,6 @@
 
 		refs.employeeFilter.addEventListener("change", () => {
 			state.employeeFilter = refs.employeeFilter.value;
-			state.page = 1;
-			render();
-		});
-
-		refs.rowsPerPage.addEventListener("change", () => {
-			state.pageSize = Number(refs.rowsPerPage.value || 50);
 			state.page = 1;
 			render();
 		});
