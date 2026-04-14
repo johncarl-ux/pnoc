@@ -337,19 +337,20 @@
         }
 
         .card-subtitle {
-            font-size: 0.75rem;
+            font-size: 0.75rem; 
             color: var(--text-muted);
             margin-top: 0.125rem;
         }
 
         /* Visual Map Grid */
         .visual-map-container {
-            background: #f1f5f9;
+            background: #e2e8f0;
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
             padding: 1.5rem;
             position: relative;
             min-height: 540px;
+            overflow: hidden;
         }
 
         .map-grid {
@@ -359,10 +360,18 @@
             gap: 10px;
             height: 100%;
             min-height: 500px;
+            background-image:
+                linear-gradient(rgba(248, 250, 252, 0.15), rgba(248, 250, 252, 0.15)),
+                url('map.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 10px;
+            padding: 0.35rem;
         }
 
         .map-zone {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.8);
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             display: flex;
