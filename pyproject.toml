@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pnoc"
+version = "0.1.0"
+description = "Document compiler – compile, list, and monitor files"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+[project.scripts]
+pnoc = "pnoc.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pnoc*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
