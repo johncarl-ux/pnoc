@@ -6,14 +6,17 @@
 	<title>PNOC Staff | Overview Dashboard</title>
 	<meta name="description" content="Simple dashboard for document status and trends." />
 	<link rel="icon" type="image/png" href="qw.png" />
+	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 	<style>
 		:root {
-			--pnoc-blue: #2f5d8a;
-			--pnoc-dark: #1b2430;
-			--pnoc-bg: #f3f6f9;
+			--pnoc-blue: #285f90;
+			--pnoc-blue-2: #3f7aa8;
+			--pnoc-dark: #172433;
+			--pnoc-bg: #eaf3fb;
 			--pnoc-card: #ffffff;
-			--pnoc-border: #d8e1ea;
-			--pnoc-muted: #5f6b76;
+			--pnoc-border: #d3e0eb;
+			--pnoc-muted: #536271;
+			--pnoc-shadow: 0 14px 34px rgba(23, 36, 51, 0.09);
 		}
 
 		* {
@@ -23,19 +26,23 @@
 		}
 
 		body {
-			font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-			background: var(--pnoc-bg);
+			font-family: "Manrope", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+			background:
+				radial-gradient(circle at 10% 0%, rgba(40, 95, 144, 0.12), transparent 36%),
+				radial-gradient(circle at 96% 100%, rgba(63, 122, 168, 0.12), transparent 42%),
+				var(--pnoc-bg);
 			color: var(--pnoc-dark);
 			line-height: 1.45;
 		}
 
 		.container {
-			width: min(1240px, 95vw);
+			width: min(1420px, 96vw);
 			margin: 0 auto;
 		}
 
 		header {
-			background: #fff;
+			background: rgba(255, 255, 255, 0.88);
+			backdrop-filter: blur(8px);
 			border-bottom: 1px solid var(--pnoc-border);
 			position: sticky;
 			top: 0;
@@ -46,7 +53,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding: 0.8rem 0;
+			padding: 0.9rem 0;
 			gap: 1rem;
 		}
 
@@ -82,70 +89,146 @@
 			align-items: center;
 			justify-content: center;
 			gap: 0.35rem;
-			padding: 0 0.75rem;
-			height: 2.25rem;
+			padding: 0 0.95rem;
+			height: 2.3rem;
 			border-radius: 999px;
-			background: var(--pnoc-blue);
+			background: linear-gradient(135deg, var(--pnoc-blue), var(--pnoc-blue-2));
 			color: #fff;
 			font-size: 0.92rem;
 			font-weight: 700;
 			line-height: 1;
+			box-shadow: 0 10px 20px rgba(40, 95, 144, 0.28);
 		}
 
 		main {
-			padding: 1.1rem 0 2rem;
+			padding: 1.35rem 0 2.3rem;
 		}
 
 		.panel {
 			background: var(--pnoc-card);
 			border: 1px solid var(--pnoc-border);
-			border-radius: 12px;
-			padding: 1rem;
+			border-radius: 18px;
+			padding: 1.15rem;
+			box-shadow: var(--pnoc-shadow);
 		}
 
 		.page-head {
-			display: flex;
-			justify-content: space-between;
+			display: grid;
+			grid-template-columns: 1.15fr minmax(280px, 0.85fr);
 			gap: 1rem;
-			align-items: flex-start;
-			margin-bottom: 1rem;
+			align-items: stretch;
+			margin-bottom: 1.1rem;
 		}
 
 		.page-head h1 {
-			font-size: clamp(1.2rem, 2.8vw, 1.8rem);
-			margin-bottom: 0.35rem;
+			font-family: "Playfair Display", Georgia, serif;
+			font-size: clamp(1.35rem, 2.8vw, 2rem);
+			margin-bottom: 0.5rem;
 		}
 
 		.page-head p {
 			color: var(--pnoc-muted);
 			max-width: 72ch;
+			margin-bottom: 0.85rem;
+		}
+
+		.page-copy {
+			padding: 1.05rem;
+			border-radius: 14px;
+			background: linear-gradient(165deg, #ffffff 0%, #f7fbff 100%);
+			border: 1px solid #d9e6f2;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+
+		.page-visual {
+			position: relative;
+			border-radius: 14px;
+			overflow: hidden;
+			min-height: 220px;
+			border: 1px solid #cfdeeb;
+			background: #dfeaf5;
+		}
+
+		.page-visual img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+
+		.page-visual::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(180deg, rgba(15, 29, 45, 0.02), rgba(15, 29, 45, 0.42));
 		}
 
 		.quick-action {
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
-			padding: 0.5rem 0.75rem;
-			border-radius: 8px;
-			background: var(--pnoc-blue);
+			padding: 0.6rem 0.9rem;
+			border-radius: 10px;
+			background: linear-gradient(135deg, var(--pnoc-blue), var(--pnoc-blue-2));
 			color: #fff;
 			text-decoration: none;
-			font-weight: 600;
+			font-weight: 700;
 			white-space: nowrap;
+			width: fit-content;
+			box-shadow: 0 10px 20px rgba(40, 95, 144, 0.24);
 		}
 
 		.filters {
 			display: grid;
 			grid-template-columns: 1fr 1fr 180px auto;
+			gap: 0.7rem;
+			margin-bottom: 1.05rem;
+			padding: 0.8rem;
+			border: 1px solid #d9e6f2;
+			border-radius: 12px;
+			background: #f8fbff;
+		}
+
+		.filter-tabs {
+			display: flex;
+			flex-wrap: wrap;
 			gap: 0.55rem;
-			margin-bottom: 1rem;
+			margin-bottom: 0.8rem;
+		}
+
+		.filter-tab {
+			border: 1px solid #cfe0ee;
+			background: #ffffff;
+			color: #32526f;
+			font: inherit;
+			font-size: 0.84rem;
+			font-weight: 700;
+			padding: 0.42rem 0.82rem;
+			border-radius: 999px;
+			cursor: pointer;
+			letter-spacing: 0.02em;
+			transition: all .2s ease;
+		}
+
+		.filter-tab:hover {
+			border-color: #b7cde0;
+			box-shadow: 0 8px 16px rgba(40, 95, 144, 0.12);
+		}
+
+		.filter-tab.active {
+			border-color: transparent;
+			color: #ffffff;
+			background: linear-gradient(135deg, var(--pnoc-blue), var(--pnoc-blue-2));
+			box-shadow: 0 10px 18px rgba(40, 95, 144, 0.24);
 		}
 
 		.filters input,
 		.filters button {
 			width: 100%;
-			padding: 0.5rem 0.55rem;
-			border-radius: 8px;
+			padding: 0.62rem 0.7rem;
+			border-radius: 10px;
 			border: 1px solid var(--pnoc-border);
 			font: inherit;
 		}
@@ -155,25 +238,26 @@
 		}
 
 		.filters button {
-			background: var(--pnoc-blue);
+			background: linear-gradient(135deg, var(--pnoc-blue), var(--pnoc-blue-2));
 			color: #fff;
-			font-weight: 600;
+			font-weight: 700;
 			cursor: pointer;
-			border-color: var(--pnoc-blue);
+			border-color: transparent;
 		}
 
 		.kpis {
 			display: grid;
 			grid-template-columns: repeat(3, minmax(0, 1fr));
-			gap: 0.8rem;
-			margin-bottom: 1rem;
+			gap: 0.85rem;
+			margin-bottom: 1.1rem;
 		}
 
 		.kpi {
-			background: #fff;
-			border: 1px solid var(--pnoc-border);
-			border-radius: 12px;
-			padding: 0.85rem 0.95rem;
+			background: linear-gradient(165deg, #ffffff 0%, #f4f9ff 100%);
+			border: 1px solid #d6e3ef;
+			border-radius: 14px;
+			padding: 0.95rem 1rem;
+			box-shadow: 0 8px 22px rgba(23, 36, 51, 0.06);
 		}
 
 		.kpi-label {
@@ -184,22 +268,23 @@
 		}
 
 		.kpi-value {
-			font-size: 1.5rem;
+			font-size: 1.65rem;
 			font-weight: 700;
 			line-height: 1.2;
+			letter-spacing: -0.02em;
 		}
 
 		.grid {
 			display: grid;
 			grid-template-columns: 1.3fr 1fr;
 			gap: 1rem;
-			margin-bottom: 1rem;
+			margin-bottom: 1.1rem;
 		}
 
 		.section-title {
-			font-size: 1rem;
+			font-size: 1.03rem;
 			font-weight: 700;
-			margin-bottom: 0.65rem;
+			margin-bottom: 0.75rem;
 		}
 
 		.recent-columns {
@@ -209,16 +294,18 @@
 		}
 
 		.recent-list {
-			border: 1px solid var(--pnoc-border);
-			border-radius: 10px;
+			border: 1px solid #d7e3ef;
+			border-radius: 12px;
 			overflow: hidden;
+			background: #fff;
 		}
 
 		.recent-list h3 {
 			font-size: 0.85rem;
-			background: #edf2f7;
-			padding: 0.5rem 0.6rem;
+			background: linear-gradient(180deg, #f8fbff 0%, #ecf4fb 100%);
+			padding: 0.58rem 0.7rem;
 			border-bottom: 1px solid var(--pnoc-border);
+			letter-spacing: 0.01em;
 		}
 
 		.recent-list ul {
@@ -226,9 +313,9 @@
 		}
 
 		.recent-list li {
-			padding: 0.55rem 0.6rem;
+			padding: 0.62rem 0.7rem;
 			border-bottom: 1px solid #edf2f7;
-			font-size: 0.88rem;
+			font-size: 0.9rem;
 		}
 
 		.recent-list li:last-child {
@@ -240,14 +327,15 @@
 			height: 270px;
 			display: block;
 			background: #fff;
-			border: 1px solid var(--pnoc-border);
-			border-radius: 10px;
+			border: 1px solid #d7e3ef;
+			border-radius: 12px;
 		}
 
 		.table-wrap {
 			overflow: auto;
-			border: 1px solid var(--pnoc-border);
-			border-radius: 10px;
+			border: 1px solid #d7e3ef;
+			border-radius: 14px;
+			background: #fff;
 		}
 
 		table {
@@ -259,39 +347,58 @@
 
 		th,
 		td {
-			border: 1px solid #d7e0ea;
-			padding: 0.48rem 0.52rem;
-			font-size: 0.88rem;
+			border: 1px solid #d7e3ef;
+			padding: 0.6rem 0.68rem;
+			font-size: 0.9rem;
 			text-align: left;
 		}
 
 		thead th {
-			background: #edf2f7;
+			position: sticky;
+			top: 0;
+			z-index: 1;
+			background: linear-gradient(180deg, #f8fbff 0%, #edf4fb 100%);
 			white-space: nowrap;
+			font-size: 0.78rem;
+			text-transform: uppercase;
+			letter-spacing: 0.04em;
+			color: #2f4f70;
 		}
 
 		tr:nth-child(even) td {
 			background: #fafcff;
 		}
 
+		tbody tr:hover td {
+			background: #f2f8ff;
+		}
+
 		.badge {
 			display: inline-block;
-			padding: 0.2rem 0.45rem;
-			font-size: 0.74rem;
+			padding: 0.24rem 0.52rem;
+			font-size: 0.75rem;
 			border-radius: 999px;
-			font-weight: 600;
-			border: 1px solid #c8d7e6;
-			background: #f3f8fd;
+			font-weight: 700;
+			border: 1px solid #c6d9ec;
+			background: #eef6ff;
 			color: #284a6a;
 		}
 
 		.muted {
 			color: var(--pnoc-muted);
-			font-size: 0.83rem;
+			font-size: 0.86rem;
 			margin-top: 0.6rem;
 		}
 
 		@media (max-width: 980px) {
+			.page-head {
+				grid-template-columns: 1fr;
+			}
+
+			.page-visual {
+				min-height: 190px;
+			}
+
 			.filters {
 				grid-template-columns: 1fr 1fr;
 			}
@@ -302,14 +409,6 @@
 				grid-template-columns: 1fr;
 			}
 		}
-	</style>
-	<style>
-		/* Modern UI small overrides for consistent look */
-		:root{ --ui-bg:#fbfcfd; --panel-bg:#fff; --radius:12px; --shadow-soft:0 6px 20px rgba(16,24,40,0.06); --accent-blue:#3b82f6 }
-		body{background:var(--ui-bg)}
-		.panel{border-radius:var(--radius);box-shadow:var(--shadow-soft)}
-		.sidebar .nav-link{border-radius:999px}
-		/* Night mode removed */
 	</style>
 </head>
 <body>
@@ -329,13 +428,16 @@
 	<main class="container">
 		<section class="panel" aria-label="Document monitoring dashboard overview">
 			<div class="page-head">
-				<div>
+				<div class="page-copy">
 					<h1>Document Overview</h1>
 					<p>
 						Track records, status, and monthly activity.
 					</p>
+					<a class="quick-action" href="add-data-create.php" aria-label="Add Record">Add Record</a>
 				</div>
-				<a class="quick-action" href="add-data-create.php" aria-label="Add Record">Add Record</a>
+				<div class="page-visual" aria-hidden="true">
+					<img src="as.jpg" alt="Dashboard visual" onerror="this.style.display='none'" />
+				</div>
 			</div>
 
 			<div class="filters" aria-label="Search and date filters">
@@ -343,6 +445,12 @@
 				<input id="holderFilter" type="text" placeholder="Copy holder" />
 				<input id="monthFilter" type="month" aria-label="Filter by issuance month" />
 				<button type="button" id="clearFilters">Clear</button>
+			</div>
+			<div class="filter-tabs" aria-label="Quick status filters">
+				<button type="button" class="filter-tab active" data-tab="all">All</button>
+				<button type="button" class="filter-tab" data-tab="issued">Issued</button>
+				<button type="button" class="filter-tab" data-tab="retrieved">Retrieved</button>
+				<button type="button" class="filter-tab" data-tab="revised">Revised</button>
 			</div>
 			<p class="muted" id="apiStatus">Loading records...</p>
 
@@ -408,7 +516,8 @@
 		const API_URL = "./api/staff.php";
 		const state = {
 			allRecords: [],
-			filteredRecords: []
+			filteredRecords: [],
+			activeTab: "all"
 		};
 
 		const refs = {
@@ -416,6 +525,7 @@
 			holderFilter: document.getElementById("holderFilter"),
 			monthFilter: document.getElementById("monthFilter"),
 			clearFilters: document.getElementById("clearFilters"),
+			filterTabs: Array.from(document.querySelectorAll(".filter-tab")),
 			apiStatus: document.getElementById("apiStatus"),
 			totalDocuments: document.getElementById("totalDocuments"),
 			totalCopies: document.getElementById("totalCopies"),
@@ -502,10 +612,32 @@
 				const issuanceDate = toDate(record.issuanceDate);
 				const issuanceMonth = issuanceDate ? `${issuanceDate.getFullYear()}-${String(issuanceDate.getMonth() + 1).padStart(2, "0")}` : "";
 				const matchMonth = !monthValue || issuanceMonth === monthValue;
-				return matchDoc && matchHolder && matchMonth;
+
+				const normalizedStatus = (record.status || "issued").trim().toLowerCase();
+				const isRetrieved = normalizedStatus === "retrieved" || Boolean(toDate(record.retrievalDate));
+				const hasRevision = Number(record.revisionNumber) > 0;
+
+				let matchTab = true;
+				if (state.activeTab === "issued") {
+					matchTab = !isRetrieved;
+				} else if (state.activeTab === "retrieved") {
+					matchTab = isRetrieved;
+				} else if (state.activeTab === "revised") {
+					matchTab = hasRevision;
+				}
+
+				return matchDoc && matchHolder && matchMonth && matchTab;
 			});
 
 			renderDashboard();
+		}
+
+		function setActiveTab(tabName) {
+			state.activeTab = tabName;
+			for (const tab of refs.filterTabs) {
+				tab.classList.toggle("active", tab.dataset.tab === tabName);
+			}
+			applyFilters();
 		}
 
 		function renderDashboard() {
@@ -641,11 +773,14 @@
 		refs.docNumberFilter.addEventListener("input", applyFilters);
 		refs.holderFilter.addEventListener("input", applyFilters);
 		refs.monthFilter.addEventListener("change", applyFilters);
+		for (const tab of refs.filterTabs) {
+			tab.addEventListener("click", () => setActiveTab(tab.dataset.tab || "all"));
+		}
 		refs.clearFilters.addEventListener("click", () => {
 			refs.docNumberFilter.value = "";
 			refs.holderFilter.value = "";
 			refs.monthFilter.value = "";
-			applyFilters();
+			setActiveTab("all");
 		});
 
 		loadRecords();

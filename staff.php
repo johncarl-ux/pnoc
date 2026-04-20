@@ -78,60 +78,72 @@
 
 		.workspace {
 			display: grid;
-			grid-template-columns: 250px 1fr;
-			gap: 1rem;
+			grid-template-columns: 280px minmax(0, 1fr);
+			gap: 1.1rem;
 			align-items: start;
 		}
 
 		.sidebar {
-			background: var(--pnoc-card);
-			border: 1px solid var(--pnoc-border);
-			border-radius: 12px;
-			padding: 0.85rem;
 			position: sticky;
-			top: 84px;
+			top: 1rem;
+			align-self: start;
+			background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+			border: 1px solid var(--pnoc-border);
+			border-radius: 16px;
+			padding: 1rem;
+			box-shadow: 0 12px 28px rgba(27, 36, 48, 0.06);
 		}
 
 		.sidebar h2 {
-			font-size: 0.95rem;
-			margin-bottom: 0.65rem;
+			font-family: 'Playfair Display', Georgia, serif;
+			font-size: 1.15rem;
+			font-weight: 600;
+			margin-bottom: 0.85rem;
+			color: var(--pnoc-dark);
 		}
 
 		.feature-nav {
-			display: flex;
-			flex-direction: column;
-			gap: 0.4rem;
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 0.7rem;
 		}
 
 		.feature-link {
 			display: flex;
 			align-items: center;
-			gap: 0.55rem;
+			gap: 0.75rem;
+			padding: 0.9rem 0.95rem;
+			border-radius: 12px;
+			border: 1px solid #dbe4ee;
+			background: #ffffff;
 			text-decoration: none;
 			color: var(--pnoc-dark);
-			font-size: 0.9rem;
-			padding: 0.45rem 0.55rem;
-			border: 1px solid transparent;
-			border-radius: 8px;
+			font-weight: 600;
+			transition: transform .16s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease;
 		}
 
 		.feature-link:hover {
-			background: #f7fafc;
-			border-color: var(--pnoc-border);
+			transform: translateY(-1px);
+			border-color: #c7d6e6;
+			background: #fbfdff;
+			box-shadow: 0 10px 22px rgba(27, 36, 48, 0.08);
 		}
 
 		.feature-icon {
-			width: 1.25rem;
-			height: 1.25rem;
-			display: inline-grid;
-			place-items: center;
-			font-size: 0.85rem;
-			border-radius: 6px;
-			background: #edf2f7;
+			width: 2.15rem;
+			height: 2.15rem;
+			border-radius: 10px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			background: linear-gradient(180deg, #eef5ff, #e4effc);
+			flex: 0 0 auto;
 		}
 
 		.content-area {
 			min-width: 0;
+			display: grid;
+			gap: 1rem;
 		}
 
 		.hero {
@@ -248,6 +260,10 @@
 		@media (max-width: 640px) {
 			.feature-nav {
 				grid-template-columns: 1fr;
+			}
+
+			.sidebar {
+				padding: 0.9rem;
 			}
 
 		}

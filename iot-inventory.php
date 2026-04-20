@@ -409,13 +409,6 @@
 						<span>Item Status Monitoring</span>
 					</a>
 				</div>
-				<div class="nav-section">
-					<div class="nav-section-title">Analytics</div>
-					<a href="report-generation.php" class="nav-link">
-						<span class="nav-icon">☰</span>
-						<span>Reports</span>
-					</a>
-				</div>
 			</nav>
 		</aside>
 

@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS inventory_items (
   assigned_employee VARCHAR(150) NULL,
   acquisition_cost DECIMAL(14,2) NOT NULL DEFAULT 0.00,
   reference_number VARCHAR(120) NULL,
+  extra_data JSON NULL,
   item_status ENUM('Usable', 'Under Maintenance', 'Retired') NOT NULL DEFAULT 'Usable',
   date_added DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   last_updated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -86,7 +87,8 @@ CREATE TABLE IF NOT EXISTS inventory_items (
   INDEX idx_asset_number (asset_number),
   INDEX idx_item_status (item_status),
   INDEX idx_group_property (item_group, property_number),
-  INDEX idx_group_asset (item_group, asset_number)
+  INDEX idx_group_asset (item_group, asset_number),
+  UNIQUE KEY uq_group_property (item_group, property_number)
 );
 
 CREATE TABLE IF NOT EXISTS inventory_item_history (

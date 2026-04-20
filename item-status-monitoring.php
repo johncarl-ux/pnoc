@@ -449,10 +449,6 @@
 					<!-- Item Allocation removed from sidebar -->
 					<a href="item-status-monitoring.php" class="nav-link active"><span class="nav-icon">◉</span><span class="nav-label">Item Status Monitoring</span></a>
 				</div>
-				<div class="nav-section">
-					<div class="nav-section-title">Analytics</div>
-					<a href="report-generation.php" class="nav-link"><span class="nav-icon">☰</span><span class="nav-label">Reports</span></a>
-				</div>
 			</nav>
 		</aside>
 
@@ -1267,10 +1263,6 @@
 					<a href="location-management.php" class="nav-link"><span class="nav-icon">⊕</span><span class="nav-label">Location Management</span></a>
 					<!-- Item Allocation removed from sidebar -->
 					<a href="item-status-monitoring.php" class="nav-link active"><span class="nav-icon">◉</span><span class="nav-label">Item Status Monitoring</span></a>
-				</div>
-				<div class="nav-section">
-					<div class="nav-section-title">Analytics</div>
-					<a href="report-generation.php" class="nav-link"><span class="nav-icon">☰</span><span class="nav-label">Reports</span></a>
 				</div>
 			</nav>
 		</aside>
